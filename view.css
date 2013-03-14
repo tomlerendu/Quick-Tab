@@ -2,14 +2,11 @@
 {
 	/* Webkit border removal */
 	outline: none;
-	/* No selecting */
-	-webkit-user-select: none;
-	user-select: none;
 }
 
 body
 {
-	width: 250px;
+	width: 300px;
 	margin: 0px;
 }
 
@@ -20,7 +17,7 @@ body
 
 #search input
 {
-	width: 240px;
+	width: 290px;
 	height: 20px;
 	padding: 5px;
 	font-size: 17px;
@@ -29,7 +26,7 @@ body
 
 #divider
 {
-	width: 250px;
+	width: 300px;
 	height: 1px;
 	background-image: url('images/divider.png');
 }
@@ -38,11 +35,13 @@ body
 {
 	font-family: 'Arial';
 	padding: 5px;
+	-webkit-user-select: none;
+	user-select: none;
 }
 
 #tabs .tab
 {
-	width: 240px;
+	width: 290px;
 	height: 28px;
 	border: 1px solid white;
 	cursor: pointer;
@@ -59,16 +58,25 @@ body
 {
 	width: 16px;
 	height: 16px;
+	padding: 6px;
 	overflow: hidden;
-	background: black;
 	display: inline-block;
-	margin-right: 5px
+}
+
+#tabs .tab .favicon img
+{
+	width: 16px !important;
+	height: 16px !important;
 }
 
 #tabs .tab .title
 {
 	display: inline-block;
-	line-height: 26px;
-	height: 26px;
+	line-height: 28px;
+	height: 28px;
+	width: 250px;
+	padding: 0px 6px;
 	overflow: hidden;
+	vertical-align: top;
+	font-size: 14px;
 }

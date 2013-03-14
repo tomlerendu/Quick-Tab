@@ -24,12 +24,15 @@ function generateList()
 	{
 		for(var i=0; i<tabs.length; i++)
 		{
-			var tabView = 
-						$('<div class="tab"><div class="favicon"></div>'
-						 +'<div class="title">'+tabs[i].title+'</div></div>')
-						.data('id', tabs[i].id)
-						.data('title', tabs[i].title)
-						.data('url', tabs[i].url);
+			var tabView = $(
+					'<div class="tab">' +
+						'<div class="favicon"><img src="' + tabs[i].favIconUrl + '" /></div>' +
+						'<div class="title">' + tabs[i].title + '</div>' +
+					'</div>'
+				)
+				.data('id', tabs[i].id)
+				.data('title', tabs[i].title)
+				.data('url', tabs[i].url);
 			
 			$('#tabs').append(tabView);
 		}
