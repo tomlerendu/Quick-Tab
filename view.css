@@ -17,11 +17,23 @@ body
 
 #search input
 {
-	width: 290px;
+	width: 260px;
 	height: 20px;
 	padding: 5px;
 	font-size: 17px;
 	border: none;
+	display: inline-block;
+}
+
+#search #clear
+{
+	float: right;
+	width: 20px;
+	height: 20px;
+	background-image: url('images/clear.png');
+	margin: 5px;
+	display: none;
+	cursor: pointer;
 }
 
 #divider
@@ -41,7 +53,7 @@ body
 
 #tabs .tab
 {
-	width: 290px;
+	width: 285px;
 	height: 28px;
 	border: 1px solid white;
 	cursor: pointer;
@@ -74,7 +86,7 @@ body
 	display: inline-block;
 	line-height: 28px;
 	height: 28px;
-	width: 250px;
+	width: 245px;
 	padding: 0px 6px;
 	overflow: hidden;
 	vertical-align: top;
