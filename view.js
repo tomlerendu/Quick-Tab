@@ -1,12 +1,12 @@
-window.onload = function()
+$(document).ready(function()
 {
 	generateList();
-}
+});
 
 function switchToTab(tabId)
 {
 	chrome.tabs.update(
-		swichTabId,
+		tabId,
 		{selected: true}
 	);
 	
@@ -18,18 +18,25 @@ function closeTab(tabId)
 	
 }
 
-function createTab(id, title, url, fav)
-{
-	
-}
-
 function generateList()
 {
 	chrome.tabs.getAllInWindow(null, function(tabs)
 	{
 		for(var i=0; i<tabs.length; i++)
 		{
-			createTab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favicon);
+			var tabView = 
+						$('<div class="tab"><div class="favicon"></div>'
+						 +'<div class="title">'+tabs[i].title+'</div></div>')
+						.data('id', tabs[i].id)
+						.data('title', tabs[i].title)
+						.data('url', tabs[i].url);
+			
+			$('#tabs').append(tabView);
 		}
+		
+		$('#tabs').children().bind('click', function()
+		{
+			switchToTab($(this).data('id'));
+		});
 	});
 }
