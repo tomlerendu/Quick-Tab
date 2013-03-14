@@ -15,7 +15,7 @@ body
 
 #search
 {
-	border-bottom: 1px solid gray;
+	
 }
 
 #search input
@@ -27,6 +27,13 @@ body
 	border: none;
 }
 
+#divider
+{
+	width: 250px;
+	height: 1px;
+	background-image: url('images/divider.png');
+}
+
 #tabs
 {
 	font-family: 'Arial';
@@ -36,8 +43,16 @@ body
 #tabs .tab
 {
 	width: 240px;
-	height: 26px;
-	display: block;
+	height: 28px;
+	border: 1px solid white;
+	cursor: pointer;
+}
+
+#tabs .tab:hover
+{
+	background: #F1F8FF;
+	border: 1px solid #D9EDFF;
+	border-radius: 5px;
 }
 
 #tabs .tab .favicon
