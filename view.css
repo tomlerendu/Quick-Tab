@@ -1,0 +1,59 @@
+* 
+{
+	/* Webkit border removal */
+	outline: none;
+	/* No selecting */
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+body
+{
+	width: 250px;
+	margin: 0px;
+}
+
+#search
+{
+	border-bottom: 1px solid gray;
+}
+
+#search input
+{
+	width: 240px;
+	height: 20px;
+	padding: 5px;
+	font-size: 17px;
+	border: none;
+}
+
+#tabs
+{
+	font-family: 'Arial';
+	padding: 5px;
+}
+
+#tabs .tab
+{
+	width: 240px;
+	height: 26px;
+	display: block;
+}
+
+#tabs .tab .favicon
+{
+	width: 16px;
+	height: 16px;
+	overflow: hidden;
+	background: black;
+	display: inline-block;
+	margin-right: 5px
+}
+
+#tabs .tab .title
+{
+	display: inline-block;
+	line-height: 26px;
+	height: 26px;
+	overflow: hidden;
+}
