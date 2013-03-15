@@ -47,14 +47,30 @@ function switchTab(tabId)
 		{selected: true}
 	);
 	
+	//Close the browser action
 	window.close();
+}
+
+function closeTab(tabId)
+{
+	//Remove the tab
+	chrome.tabs.remove(tabId);
+	
+	//Remove the tab from the list
+	$(this).slideUp(100, function() {
+		$(this).remove();
+	});
+
+	return false;
 }
 
 function generateTabView(id, title, url, fav)
 {
+	//If there is no favicon for the page use the "blank" one
 	if (fav == undefined || fav == "") 
 		fav = "images/blank.png";
-			
+	
+	//Create the HTML and associate the tab ID and title with it		
 	var tabView = $(
 		'<div class="tab">' +
 			'<div class="favicon"><img src="' + fav + '" /></div>' +
@@ -63,7 +79,8 @@ function generateTabView(id, title, url, fav)
 	)
 	.data('id', id)
 	.data('title', title);
-			
+	
+	//Add to the tab list		
 	$('#tabs').append(tabView);
 }
 
@@ -78,18 +95,12 @@ function generateList()
 		//Mouse events for each tab
 		$('#tabs').children()
 			//Switch tab
-			.bind('mousedown', function() {
+			.bind('click', function() {
 				switchTab($(this).data('id'));
 			})
 			//Close tab
 			.bind('contextmenu', function() {
-			
-				chrome.tabs.remove($(this).data('id'));
-				$(this).slideUp(100, function() {
-					$(this).remove();
-				});
-				return false;
-				
+				return closeTab($(this).data('id'));
 			});
 	});
 }
