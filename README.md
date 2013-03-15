@@ -1,4 +1,4 @@
 Quick Tab
 ==========
 
-A Google Chrome extension
+A Google Chrome extension.
