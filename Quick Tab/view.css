@@ -23,6 +23,7 @@ body
 	font-size: 17px;
 	border: none;
 	display: inline-block;
+	text-indent: 5px;
 }
 
 #search #clear
@@ -41,6 +42,28 @@ body
 	width: 300px;
 	height: 1px;
 	background-image: url('images/divider.png');
+}
+
+#help
+{
+	display: none;
+	margin: 5px;
+}
+
+#help p, #help ul
+{
+	margin: 5px 0px;
+	font-family: 'Arial';
+	font-size: 13px;
+	color: gray;
+	text-align: center;
+}
+
+#help button
+{
+	display: block;
+	width: 100px;
+	margin: 5px auto;
 }
 
 #tabs
@@ -91,4 +114,14 @@ body
 	overflow: hidden;
 	vertical-align: top;
 	font-size: 14px;
+}
+
+#notabs
+{
+	margin: 20px 5px;
+	font-family: 'Arial';
+	font-size: 13px;
+	color: gray;
+	text-align: center;
+	display: none;
 }

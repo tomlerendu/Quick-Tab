@@ -1,5 +1,8 @@
-$(document).ready(function()
-{
+$(document).ready(function() {
+
+	//Shows help if it's a fresh install
+	showHelp();
+	
 	//Creates the tab list
 	generateList();
 	
@@ -9,8 +12,12 @@ $(document).ready(function()
 	});
 	
 	//If the clear search box button is pressed
-	$('#search > #clear').bind('mousedown', function(){
+	$('#search > #clear').bind('mousedown', function() {
 		clearSearch();
+	});
+	
+	$('#help > button').bind('click', function() {
+		hideHelp();
 	});
 });
 
@@ -19,25 +26,37 @@ function clearSearch()
 	//Focus the search box and remove it's
 	$('#search > input').focus().val('');
 	//Hide the clear button
-	$('#clear').css('display','none');
+	$('#clear').css('display', 'none');
+	//Show all tabs
+	$('#tabs > .tab').css('display', 'block');
 }
 
 function doSearch(term)
 {
 	// TODO: this bit should be moved
-	if(term == undefined || term == '') $('#clear').css('display','none');
-	else $('#clear').css('display','block');
-	
+	if(term == undefined || term == '') $('#clear').css('display', 'none');
+	else $('#clear').css('display', 'block');
+		
 	//The term that must be matched
 	var regex = new RegExp('(' + term + ')', 'gi');
+
+	var tabCounter = 0;
 	
 	//Match against each tab
-	$('#tabs > .tab').foreach(function() {
-		if($(this).data('title').match(regex))
+	$('#tabs > .tab').each(function() {
+		if(!$(this).data('title').match(regex))
+			$(this).css('display', 'none');
+		else
 		{
-			
-		} 
+			$(this).css('display', 'block');
+			tabCounter++;
+		}
 	});
+	
+	if(tabCounter == 0)
+		$('#notabs').css('display', 'block');
+	else
+		$('#notabs').css('display', 'none');
 }
 
 function switchTab(tabId)
@@ -57,11 +76,16 @@ function closeTab(tabId)
 	chrome.tabs.remove(tabId);
 	
 	//Remove the tab from the list
-	$(this).slideUp(100, function() {
-		$(this).remove();
+	//TODO: optimise how this is done
+	$('#tabs > .tab').each(function() {
+		if($(this).data('id') == tabId)
+		{
+			$(this).slideUp(100, function() {
+				$(this).remove();
+			});
+		}
+			
 	});
-
-	return false;
 }
 
 function generateTabView(id, title, url, fav)
@@ -94,13 +118,32 @@ function generateList()
 		
 		//Mouse events for each tab
 		$('#tabs').children()
+		
 			//Switch tab
-			.bind('click', function() {
-				switchTab($(this).data('id'));
+			.bind('mousedown', function(e) {
+				//Left mouse only
+				if(e.which == 1)
+					switchTab($(this).data('id'));
 			})
+			
 			//Close tab
-			.bind('contextmenu', function() {
-				return closeTab($(this).data('id'));
+			.bind('contextmenu', function(e) {
+				closeTab($(this).data('id'));
+				e.preventDefault();
 			});
 	});
+}
+
+function showHelp()
+{
+	if(localStorage['help_closed'] == undefined)
+	{
+		$('#help').css('display', 'block');
+	}
+}
+
+function hideHelp()
+{
+	$('#help').css('display', 'none');
+	localStorage['help_closed'] = true;
 }
