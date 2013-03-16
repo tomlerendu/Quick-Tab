@@ -7,7 +7,10 @@
 
 	"browser_action":
 	{
-		"default_icon": "images/icon16.png",
+		"default_icon":
+		{
+			"19": "images/icon19.png"
+		},
 		"default_title": "Quick Tab",
 		"default_popup": "view.html"
 	},
@@ -16,11 +19,7 @@
 	
 	"icons":
 	{
-		"128": "images/icon128.png",
 		"16": "images/icon16.png",
-		"32": "images/icon32.png",
 		"48": "images/icon48.png"
-	},
-	
-	"options_page": "options.html"
+	}
 }
