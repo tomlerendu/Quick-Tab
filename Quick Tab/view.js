@@ -44,13 +44,13 @@ function doSearch(term)
 	
 	//Match against each tab
 	$('#tabs > .tab').each(function() {
-		if(!$(this).data('title').match(regex))
-			$(this).css('display', 'none');
-		else
+		if($(this).data('title').match(regex) || $(this).data('url').match(regex))
 		{
 			$(this).css('display', 'block');
 			tabCounter++;
 		}
+		else
+			$(this).css('display', 'none');
 	});
 	
 	if(tabCounter == 0)
@@ -102,7 +102,8 @@ function generateTabView(id, title, url, fav)
 		'</div>'
 	)
 	.data('id', id)
-	.data('title', title);
+	.data('title', title)
+	.data('url', url);
 	
 	//Add to the tab list		
 	$('#tabs').append(tabView);

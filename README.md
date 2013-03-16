@@ -12,3 +12,4 @@ Todo
 * Search keyboard support
 * Tab expanding
 * Search highlighting
+* Live updating
