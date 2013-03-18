@@ -76,8 +76,18 @@ $(document).ready(function() {
 	generateList();
 	
 	//If something is typed in the search box
-	$('#search > input').bind('keyup', function() {
-		doSearch($(this).val());
+	$('#search > input').bind('keydown', function(e) {
+		var term;
+		
+		if(e.keyCode == 8)
+			term = $(this).val().substring(0, $(this).val().length - 1);
+		else
+			term = $(this).val() + String.fromCharCode(e.keyCode);
+		
+		if(term.length != 0)
+			doSearch(term);
+		else
+			clearSearch();
 	});
 	
 	//If the clear search box button is pressed
@@ -109,6 +119,7 @@ function doSearch(term)
 		$('#clear').show();
 		
 	//The term that must be matched
+	//TODO: Ban regular expressions
 	var regex = new RegExp('(' + term + ')', 'gi');
 	var tabCounter = 0;
 	
