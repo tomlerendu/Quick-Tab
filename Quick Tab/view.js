@@ -1,3 +1,72 @@
+var tabArray = new Array();
+/*
+	tabArray is a list of tab objects, where each
+	object has the properties:
+	
+	--------------------
+	     tabObject
+	--------------------
+	+ id
+	+ url
+	+ title
+	+ favicon
+	+ viewReference
+	- hideView
+	- showView
+	- closeView
+*/
+
+function tab(id, title, url, fav)
+{
+	//If there is no favicon for the page use the "blank" one
+	if (fav == undefined || fav == "" || fav == "chrome://theme/IDR_EXTENSIONS_FAVICON") 
+		fav = "images/blank.png";
+	
+	//Create the view and bind the mouse events to it
+	var tabView = $(
+		'<div class="tab">' +
+			'<div class="favicon"><img src="' + fav + '" /></div>' +
+			'<div class="title">' + title + '</div>' +
+		'</div>'
+	)
+	.bind('mousedown', function(e) {
+		if(e.which == 1)
+			//Left click, switch to the tab
+			switchTab(id);
+		else if(e.which == 3)
+		{
+			//Right click, close the tab
+			closeTab(id);
+			e.preventDefault();
+		}
+	});
+	
+	
+	//Create the properties
+	this.id = id;
+	this.title = title;
+	this.url = url;
+	this.fav = fav;
+	this.viewReference = tabView;
+	
+	this.hideView = function()
+	{
+		$(this.viewReference).hide();
+	};
+	
+	this.showView = function()
+	{
+		$(this.viewReference).show();
+	};
+	
+	this.closeView = function()
+	{
+		$(this.viewReference).slideUp(100, function() {
+			$(this.viewReference).remove();
+		});
+	}
+}
+
 $(document).ready(function() {
 
 	//Shows help if it's a fresh install
@@ -23,40 +92,43 @@ $(document).ready(function() {
 
 function clearSearch()
 {
-	//Focus the search box and remove it's
+	//Focus the search box and remove it's value
 	$('#search > input').focus().val('');
 	//Hide the clear button
-	$('#clear').css('display', 'none');
+	$('#clear').hide()
 	//Show all tabs
-	$('#tabs > .tab').css('display', 'block');
+	$('#tabs > .tab').show();
 }
 
 function doSearch(term)
 {
 	// TODO: this bit should be moved
-	if(term == undefined || term == '') $('#clear').css('display', 'none');
-	else $('#clear').css('display', 'block');
+	if(term == undefined || term == '')
+		$('#clear').hide();
+	else
+		$('#clear').show();
 		
 	//The term that must be matched
 	var regex = new RegExp('(' + term + ')', 'gi');
-
 	var tabCounter = 0;
 	
 	//Match against each tab
-	$('#tabs > .tab').each(function() {
-		if($(this).data('title').match(regex) || $(this).data('url').match(regex))
+	for(var i in tabArray)
+	{
+		if(tabArray[i].title.match(regex) || tabArray[i].url.match(regex))
 		{
-			$(this).css('display', 'block');
+			tabArray[i].showView();
 			tabCounter++;
 		}
 		else
-			$(this).css('display', 'none');
-	});
+			tabArray[i].hideView();
+	}
 	
+	//No tabs matched message
 	if(tabCounter == 0)
-		$('#notabs').css('display', 'block');
+		$('#notabs').show()
 	else
-		$('#notabs').css('display', 'none');
+		$('#notabs').hide()
 }
 
 function switchTab(tabId)
@@ -75,72 +147,31 @@ function closeTab(tabId)
 	//Remove the tab
 	chrome.tabs.remove(tabId);
 	
-	//Remove the tab from the list
-	//TODO: optimise how this is done
-	$('#tabs > .tab').each(function() {
-		if($(this).data('id') == tabId)
-		{
-			$(this).slideUp(100, function() {
-				$(this).remove();
-			});
-		}
-			
-	});
-}
-
-function generateTabView(id, title, url, fav)
-{
-	//If there is no favicon for the page use the "blank" one
-	if (fav == undefined || fav == "" || fav == "chrome://theme/IDR_EXTENSIONS_FAVICON") 
-		fav = "images/blank.png";
+	//Remove the view
+	tabArray[tabId].closeView();
 	
-	//Create the HTML and associate the tab ID and title with it		
-	var tabView = $(
-		'<div class="tab">' +
-			'<div class="favicon"><img src="' + fav + '" /></div>' +
-			'<div class="title">' + title + '</div>' +
-		'</div>'
-	)
-	.data('id', id)
-	.data('title', title)
-	.data('url', url);
-	
-	//Add to the tab list		
-	$('#tabs').append(tabView);
+	//Remove the tab from the tab list
+	tabArray.splice(tabId, 1);
 }
 
 function generateList()
 {
 	chrome.tabs.getAllInWindow(null, function(tabs)
 	{
-		//Create the HTML for each tab
 		for(var i=0; i<tabs.length; i++)
-			generateTabView(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl);
-		
-		//Mouse events for each tab
-		$('#tabs').children()
-		
-			//Switch tab
-			.bind('mousedown', function(e) {
-				//Left mouse only
-				if(e.which == 1)
-					switchTab($(this).data('id'));
-			})
-			
-			//Close tab
-			.bind('contextmenu', function(e) {
-				closeTab($(this).data('id'));
-				e.preventDefault();
-			});
+		{
+			//Create an object for each tab
+			tabArray[tabs[i].id] = new tab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl);
+			//Add to the tabs view		
+			$('#tabs').append(tabArray[tabs[i].id].viewReference);
+		}
 	});
 }
 
 function showHelp()
 {
 	if(localStorage['help_closed'] == undefined)
-	{
 		$('#help').css('display', 'block');
-	}
 }
 
 function hideHelp()
