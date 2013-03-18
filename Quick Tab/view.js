@@ -90,8 +90,9 @@ function closeTab(tabId)
 
 function generateTabView(id, title, url, fav)
 {
+console.log(fav);
 	//If there is no favicon for the page use the "blank" one
-	if (fav == undefined || fav == "") 
+	if (fav == undefined || fav == "" || fav == "chrome://theme/IDR_EXTENSIONS_FAVICON") 
 		fav = "images/blank.png";
 	
 	//Create the HTML and associate the tab ID and title with it		
