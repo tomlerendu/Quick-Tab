@@ -161,8 +161,7 @@ var Manager = Class.create
 		this.help = new Help();
 		this.search = new Search();
 
-		this.tabArray = this.generateList();
-
+		this.tabArray = this.generateList()
 
 		//User pressed a key in the search box
 		$('searchInput').addEventListener('keydown', function(e) {
@@ -194,7 +193,6 @@ var Manager = Class.create
 					break;
 				case 3:
 					//Right click, close the tab
-					e.preventDefault();
 					this.closeTab(tabId);
 					break;
 			}
@@ -239,4 +237,7 @@ var Manager = Class.create
 	}
 });
 
-window.onload = function() { var tabManager = new Manager(); }
+window.onload = function() {
+	document.oncontextmenu = function() { return false };
+	var tabManager = new Manager();
+}
