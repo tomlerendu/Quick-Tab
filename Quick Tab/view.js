@@ -134,9 +134,12 @@ var Search = Class.create
 		else
 			$('noTabs').hide();
 	},
-	
+
 	searchInputKeydown : function(e, tabArray)
 	{
+		if(!this.isValidSearchChar(e, 0))
+			return;
+
 		var term;
 
 		if(e.keyCode == 8)
@@ -151,6 +154,22 @@ var Search = Class.create
 		}
 		else
 			this.clear(tabArray);
+	},
+
+	isValidSearchChar : function(e, modifier)
+	{
+		//The keypressed event has keycodes that are 32 higher than the keydown event
+		keyCode = e.keyCode - modifier;
+
+		if(	(keyCode >= 48 && keyCode <= 57) ||    //Numbers
+			(keyCode >= 65 && keyCode <= 90) ||    //Alphabet
+			(keyCode >= 96 && keyCode <= 105) ||   //Num keys
+			keyCode == 32 ||					   //Space bar
+			keyCode == 8						   //Backspace
+		)
+			return true;
+
+		return false;
 	}
 });
 
@@ -166,6 +185,11 @@ var Manager = Class.create
 		//User pressed a key in the search box
 		$('searchInput').addEventListener('keydown', function(e) {
 			this.search.searchInputKeydown(e, this.tabArray);
+		}.bind(this));
+
+		$('searchInput').addEventListener('keypress', function(e){
+			if(!this.search.isValidSearchChar(e, 32))
+				e.preventDefault();
 		}.bind(this));
 
 		//User clicked the clear search button
