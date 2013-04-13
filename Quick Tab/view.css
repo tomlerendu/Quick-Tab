@@ -10,12 +10,7 @@ body
 	margin: 0px;
 }
 
-#search
-{
-	
-}
-
-#search input
+#searchInput
 {
 	width: 260px;
 	height: 20px;
@@ -26,7 +21,7 @@ body
 	text-indent: 5px;
 }
 
-#search #clear
+#searchClear
 {
 	float: right;
 	width: 20px;
@@ -116,7 +111,7 @@ body
 	font-size: 14px;
 }
 
-#notabs
+#noTabs
 {
 	margin: 20px 5px;
 	font-family: 'Arial';

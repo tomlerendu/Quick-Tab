@@ -1,192 +1,242 @@
-var tabArray = new Array();
-/*
-	tabArray is a list of tab objects, where each
-	object has the properties:
-	
-	--------------------
-	     tabObject
-	--------------------
-	+ id
-	+ url
-	+ title
-	+ favicon
-	+ viewReference
-	- hideView
-	- showView
-	- closeView
-*/
-
-function tab(id, title, url, fav)
-{
-	//If there is no favicon for the page use the "blank" one
-	if (fav == undefined || fav == "" || fav == "chrome://theme/IDR_EXTENSIONS_FAVICON") 
-		fav = "images/blank.png";
-	
-	//Create the view and bind the mouse events to it
-	var tabView = $(
-		'<div class="tab">' +
-			'<div class="favicon"><img src="' + fav + '" /></div>' +
-			'<div class="title">' + title + '</div>' +
-		'</div>'
-	)
-	.bind('mousedown', function(e) {
-		if(e.which == 1)
-			//Left click, switch to the tab
-			switchTab(id);
-		else if(e.which == 3)
-		{
-			//Right click, close the tab
-			closeTab(id);
-			e.preventDefault();
-		}
-	});
-	
-	
-	//Create the properties
-	this.id = id;
-	this.title = title;
-	this.url = url;
-	this.fav = fav;
-	this.viewReference = tabView;
-	
-	this.hideView = function()
+var TabView = Class.create
+({
+	initialize : function(delegate)
 	{
-		$(this.viewReference).hide();
-	};
+		this.delegate = delegate;
+		this.reference = this.buildTabView();
+	},
 	
-	this.showView = function()
-	{
-		$(this.viewReference).show();
-	};
-	
-	this.closeView = function()
-	{
-		$(this.viewReference).slideUp(100, function() {
-			$(this.viewReference).remove();
-		});
-	}
-}
-
-$(document).ready(function() {
-
-	//Shows help if it's a fresh install
-	showHelp();
-	
-	//Creates the tab list
-	generateList();
-	
-	//If something is typed in the search box
-	$('#search > input').bind('keydown', function(e) {
-		var term;
+	buildTabView : function()
+	{	
+		var favImageView = document.createElement('img');
+		favImageView.src = this.delegate.fav;
 		
-		if(e.keyCode == 8)
-			term = $(this).val().substring(0, $(this).val().length - 1);
-		else
-			term = $(this).val() + String.fromCharCode(e.keyCode);
+		var favView = document.createElement('div');
+		favView.className = 'favicon';
+		favView.appendChild(favImageView);
+
+		var titleView = document.createElement('div');
+		titleView.className = 'title';
+		titleView.appendChild(document.createTextNode(this.delegate.title));
+
+		var view = document.createElement('div');
+		view.className = 'tab';
+		view.id = 'tab-' + this.delegate.id;
+		view.appendChild(favView);
+		view.appendChild(titleView);
 		
-		if(term.length != 0)
-			doSearch(term);
-		else
-			clearSearch();
-	});
-	
-	//If the clear search box button is pressed
-	$('#search > #clear').bind('mousedown', function() {
-		clearSearch();
-	});
-	
-	$('#help > button').bind('click', function() {
-		hideHelp();
-	});
+		return view;
+	}, 
 });
 
-function clearSearch()
-{
-	//Focus the search box and remove it's value
-	$('#search > input').focus().val('');
-	//Hide the clear button
-	$('#clear').hide()
-	//Show all tabs
-	$('#tabs > .tab').show();
-}
-
-function doSearch(term)
-{
-	// TODO: this bit should be moved
-	if(term == undefined || term == '')
-		$('#clear').hide();
-	else
-		$('#clear').show();
-		
-	//The term that must be matched
-	//TODO: Ban regular expressions
-	var regex = new RegExp('(' + term + ')', 'gi');
-	var tabCounter = 0;
-	
-	//Match against each tab
-	for(var i in tabArray)
+var Tab = Class.create
+({
+	initialize : function(id, title, url, fav)
 	{
-		if(tabArray[i].title.match(regex) || tabArray[i].url.match(regex))
+		//If there is no favicon for the page use the "blank" one
+		if (
+			fav == undefined ||
+			fav == "" ||
+			fav == "chrome://theme/IDR_EXTENSIONS_FAVICON" ||
+			fav == "chrome://theme/IDR_EXTENSIONS_FAVICON@2x"
+		)
+			fav = "images/blank.png";
+	
+		//Create the properties
+		this.id = id;
+		this.title = title;
+		this.url = url;
+		this.fav = fav;
+		this.view = new TabView(this);
+	
+	},
+		
+	hideView : function()
+	{
+		$(this.view.reference).hide();
+	},
+	
+	showView : function()
+	{
+		$(this.view.reference).show();
+	},
+	
+	closeView : function()
+	{
+		$(this.view.reference).remove();
+	}
+});
+
+var Help = Class.create
+({
+	initialize : function()
+	{
+		//Show help if it's a fresh install
+		if(localStorage.getItem('help_closed') == undefined)
+			this.showView();
+	},
+	
+	showView : function()
+	{
+		$('help').show();
+		$('helpButton').onclick = this.hideView;
+	},
+
+	hideView : function()
+	{
+		$('help').hide();
+		localStorage.setItem('help_closed', true);
+	}
+});
+
+var Search = Class.create
+({
+	initialize : function()
+	{
+
+	},
+	
+	clear : function(tabArray)
+	{
+		//Focus the search box and remove it's value
+		$('searchInput').focus();
+		$('searchInput').value = '';
+		//Hide the clear button
+		$('searchClear').hide();
+		//Show all tabs
+		tabArray.each(function(tab) {
+			tab.view.reference.show();
+		});
+		//Hide the no tabs matched notice
+		$('noTabs').hide();
+	},
+	
+	query : function(term, tabArray)
+	{	
+		//The term that must be matched
+		var regex = new RegExp('(' + term + ')', 'gi');
+		var tabCounter = 0;
+	
+		//Match against each tab
+		tabArray.each(function(tab) {
+			if(tab.title.match(regex) || tab.url.match(regex))
+			{
+				tab.showView();
+				tabCounter++;
+			}
+			else
+				tab.hideView();
+		});
+		
+		//No tabs matched message
+		if(tabCounter == 0)
+			$('noTabs').show();
+		else
+			$('noTabs').hide();
+	},
+	
+	searchInputKeydown : function(e, tabArray)
+	{
+		var term;
+
+		if(e.keyCode == 8)
+			term = $('searchInput').value.substring(0, $('searchInput').value.length - 1);
+		else
+			term = $('searchInput').value + String.fromCharCode(e.keyCode);
+		
+		if(term.length != 0)
 		{
-			tabArray[i].showView();
-			tabCounter++;
+			$('searchClear').show();
+			this.query(term, tabArray);
 		}
 		else
-			tabArray[i].hideView();
+			this.clear();
 	}
-	
-	//No tabs matched message
-	if(tabCounter == 0)
-		$('#notabs').show()
-	else
-		$('#notabs').hide()
-}
+});
 
-function switchTab(tabId)
-{
-	chrome.tabs.update(
-		tabId,
-		{selected: true}
-	);
-	
-	//Close the browser action
-	window.close();
-}
+var Manager = Class.create
+({
+	initialize : function()
+	{	
+		this.help = new Help();
+		this.search = new Search();
 
-function closeTab(tabId)
-{
-	//Remove the tab
-	chrome.tabs.remove(tabId);
-	
-	//Remove the view
-	tabArray[tabId].closeView();
-	
-	//Remove the tab from the tab list
-	tabArray.splice(tabId, 1);
-}
+		this.tabArray = this.generateList();
 
-function generateList()
-{
-	chrome.tabs.getAllInWindow(null, function(tabs)
+
+		//User pressed a key in the search box
+		$('searchInput').addEventListener('keydown', function(e) {
+			this.search.searchInputKeydown(e, this.tabArray);
+		}.bind(this));
+
+		//User clicked the clear search button
+		$('searchClear').addEventListener('mousedown', function(e) {
+			this.search.clear(this.tabArray);
+		}.bind(this));
+
+		//User clicked within the tab list
+		$('tabs').addEventListener('mousedown', function(e) {
+
+			//Go up the DOM until the actual tab element is found
+			var el = e.target;
+			while(el.className != 'tab')
+				el = el.parentNode;
+			
+			//Get the ID for the tab
+			var tabId = parseInt(el.id.replace('tab-', ''));
+
+			switch(e.which)
+			{
+				case 1:
+					//Left click, switch to the tab
+					this.switchTab(tabId);
+					window.close();
+					break;
+				case 3:
+					//Right click, close the tab
+					e.preventDefault();
+					this.closeTab(tabId);
+					break;
+			}
+		}.bind(this));
+	},
+	
+	generateList : function()
 	{
-		for(var i=0; i<tabs.length; i++)
+		var tabArray = new Array();
+		chrome.tabs.getAllInWindow(null, function(tabs)
 		{
-			//Create an object for each tab
-			tabArray[tabs[i].id] = new tab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl);
-			//Add to the tabs view		
-			$('#tabs').append(tabArray[tabs[i].id].viewReference);
-		}
-	});
-}
+			for(var i=0; i<tabs.length; i++)
+			{
+				//Create an object for each tab
+				tabArray[tabs[i].id] = new Tab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl);
+				//Add to the tabs view		
+				$('tabs').appendChild(tabArray[tabs[i].id].view.reference);
+			}
+		});
+		
+		return tabArray;
+	},
+	
+	closeTab : function(tabId)
+	{
+		//Remove the tab
+		chrome.tabs.remove(tabId);
+	
+		//Remove the view
+		this.tabArray[tabId].closeView();
+	
+		//Remove the tab from the tab list
+		this.tabArray.splice(tabId, 1);
+	},
+	
+	switchTab : function(tabId)
+	{
+		chrome.tabs.update(
+			tabId,
+			{selected: true}
+		);
+	}
+});
 
-function showHelp()
-{
-	if(localStorage['help_closed'] == undefined)
-		$('#help').css('display', 'block');
-}
-
-function hideHelp()
-{
-	$('#help').css('display', 'none');
-	localStorage['help_closed'] = true;
-}
+window.onload = function() { var tabManager = new Manager(); }
