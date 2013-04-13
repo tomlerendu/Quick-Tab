@@ -12,7 +12,7 @@ body
 
 #searchInput
 {
-	width: 260px;
+	width: 255px;
 	height: 20px;
 	padding: 5px;
 	font-size: 17px;
@@ -28,8 +28,14 @@ body
 	height: 20px;
 	background-image: url('images/clear.png');
 	margin: 5px;
+	margin-right: 10px;
 	display: none;
 	cursor: pointer;
+}
+
+#searchClear:hover
+{
+	background-image: url('images/clear_hover.png');
 }
 
 #divider
