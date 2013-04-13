@@ -143,14 +143,14 @@ var Search = Class.create
 			term = $('searchInput').value.substring(0, $('searchInput').value.length - 1);
 		else
 			term = $('searchInput').value + String.fromCharCode(e.keyCode);
-		
+
 		if(term.length != 0)
 		{
 			$('searchClear').show();
 			this.query(term, tabArray);
 		}
 		else
-			this.clear();
+			this.clear(tabArray);
 	}
 });
 
