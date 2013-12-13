@@ -142,10 +142,21 @@ var Search = Class.create
 
 		var term;
 
-		if(e.keyCode == 8)
+		if (e.keyCode == 13) {
+            // enter
+            var el = $$('.tab').find(function(el) { return el.visible(); });
+            var tabId = parseInt(el.id.replace('tab-', ''));
+            if (tabId) {
+                chrome.tabs.update(tabId, {selected: true});
+                window.close();
+            }
+            return;
+        } else if (e.keyCode == 8) {
 			term = $('searchInput').value.substring(0, $('searchInput').value.length - 1);
-		else
+        }
+		else {
 			term = $('searchInput').value + String.fromCharCode(e.keyCode);
+        }
 
 		if(term.length != 0)
 		{
@@ -165,7 +176,8 @@ var Search = Class.create
 			(keyCode >= 65 && keyCode <= 90) ||    //Alphabet
 			(keyCode >= 96 && keyCode <= 105) ||   //Num keys
 			keyCode == 32 ||					   //Space bar
-			keyCode == 8						   //Backspace
+			keyCode == 8  ||						   //Backspace
+            keyCode == 13
 		)
 			return true;
 
