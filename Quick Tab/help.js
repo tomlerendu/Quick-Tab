@@ -17,4 +17,5 @@ Help.prototype.show = function()
 Help.prototype.hide = function()
 {
     this.reference.classList.add('hidden');
+    localStorage.setItem('help', true);
 };
