@@ -1,78 +1,9 @@
-var TabView = Class.create
-({
-	initialize : function(delegate)
-	{
-		this.delegate = delegate;
-		this.reference = this.buildTabView();
-	},
-	
-	buildTabView : function()
-	{	
-		var favImageView = document.createElement('img');
-		favImageView.src = this.delegate.fav;
-		
-		var favView = document.createElement('div');
-		favView.className = 'favicon';
-		favView.appendChild(favImageView);
-
-		var titleView = document.createElement('div');
-		titleView.className = 'title';
-		titleView.appendChild(document.createTextNode(this.delegate.title));
-
-		var view = document.createElement('div');
-		view.className = 'tab';
-		view.id = 'tab-' + this.delegate.id;
-		view.appendChild(favView);
-		view.appendChild(titleView);
-		
-		return view;
-	}, 
-});
-
-var Tab = Class.create
-({
-	initialize : function(id, title, url, fav)
-	{
-		//If there is no favicon for the page use the "blank" one
-		if (
-			fav == undefined ||
-			fav == "" ||
-			fav == "chrome://theme/IDR_EXTENSIONS_FAVICON" ||
-			fav == "chrome://theme/IDR_EXTENSIONS_FAVICON@2x"
-		)
-			fav = "images/blank.png";
-	
-		//Create the properties
-		this.id = id;
-		this.title = title;
-		this.url = url;
-		this.fav = fav;
-		this.view = new TabView(this);
-	
-	},
-		
-	hideView : function()
-	{
-		$(this.view.reference).hide();
-	},
-	
-	showView : function()
-	{
-		$(this.view.reference).show();
-	},
-	
-	closeView : function()
-	{
-		$(this.view.reference).remove();
-	}
-});
-
 var Help = Class.create
 ({
 	initialize : function()
 	{
 		//Show help if it's a fresh install
-		if(localStorage.getItem('help_closed') == undefined)
+		if(typeof localStorage.getItem('helpClosed') == "undefined")
 			this.showView();
 	},
 	
@@ -85,7 +16,7 @@ var Help = Class.create
 	hideView : function()
 	{
 		$('help').hide();
-		localStorage.setItem('help_closed', true);
+		localStorage.setItem('helpClosed', true);
 	}
 });
 
@@ -105,7 +36,7 @@ var Search = Class.create
 		$('searchClear').hide();
 		//Show all tabs
 		tabArray.each(function(tab) {
-			tab.view.reference.show();
+			tab.visible(true);
 		});
 		//Hide the no tabs matched notice
 		$('noTabs').hide();
@@ -121,11 +52,11 @@ var Search = Class.create
 		tabArray.each(function(tab) {
 			if(tab.title.match(regex) || tab.url.match(regex))
 			{
-				tab.showView();
+				tab.visible(true);
 				tabCounter++;
 			}
 			else
-				tab.hideView();
+				tab.visible(false);
 		});
 		
 		//No tabs matched message
@@ -245,7 +176,7 @@ var Manager = Class.create
 				//Create an object for each tab
 				tabArray[tabs[i].id] = new Tab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl);
 				//Add to the tabs view		
-				$('tabs').appendChild(tabArray[tabs[i].id].view.reference);
+				$('tabs').appendChild(tabArray[tabs[i].id].view);
 			}
 		});
 		
@@ -258,7 +189,7 @@ var Manager = Class.create
 		chrome.tabs.remove(tabId);
 	
 		//Remove the view
-		this.tabArray[tabId].closeView();
+		this.tabArray[tabId].close();
 	
 		//Remove the tab from the tab list
 		this.tabArray.splice(tabId, 1);
@@ -276,4 +207,4 @@ var Manager = Class.create
 window.onload = function() {
 	document.oncontextmenu = function() { return false };
 	var tabManager = new Manager();
-}
+};
