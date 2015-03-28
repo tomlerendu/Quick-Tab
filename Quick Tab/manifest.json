@@ -2,7 +2,7 @@
 	"manifest_version": 2,
 	
 	"name": "Quick Tab",
-	"version": "3.0",
+	"version": "4.0",
 	"permissions": [ "tabs" ],
 
 	"browser_action": {
