@@ -38,7 +38,7 @@ body
 	background-image: url('images/clear_hover.png');
 }
 
-#divider
+.divider
 {
 	width: 300px;
 	height: 1px;
