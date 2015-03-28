@@ -8,8 +8,14 @@ function Search()
 Search.prototype.clear = function(tabArray)
 {
     //Focus the search box and remove it's value
-    this.searchInputReference.focus();
     this.searchInputReference.value = '';
+
+    //Wait 0.5s before giving focus to the search box
+    //to account for the mouse up event
+    setTimeout(function() {
+        this.searchInputReference.focus();
+    }.bind(this), 500);
+
     //Hide the clear button
     this.searchClearReference.classList.add('hidden');
     //Show all tabs
