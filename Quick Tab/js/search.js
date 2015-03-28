@@ -68,10 +68,8 @@ Search.prototype.searchInputKeydown = function(e, tabArray)
     } else if (e.keyCode == 8) {
         term = this.searchInputReference.value.substring(0, this.searchInputReference.value.length - 1);
     }
-    else {
-        console.log(typeof String.fromCharCode(e.keyCode));
+    else
         term = this.searchInputReference.value.concat(String.fromCharCode(e.keyCode));
-    }
 
     if(term.length != 0)
     {
