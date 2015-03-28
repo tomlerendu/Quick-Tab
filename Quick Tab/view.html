@@ -6,10 +6,11 @@
 		<script type="text/javascript" src="view.js"></script>
         <script type="text/javascript" src="tab.js"></script>
         <script type="text/javascript" src="help.js"></script>
+        <script type="text/javascript" src="search.js"></script>
 	</head>
 	<body>
 		<div>
-			<div id="searchClear"></div>
+			<div id="searchClear" class="hidden"></div>
 			<input type="text" id="searchInput" autofocus="true" placeholder="Quick Tab" />
 		</div>
 		<div class="divider"></div>
@@ -25,6 +26,6 @@
 			<div class="divider"></div>
 		</div>
 		<div id="tabs"></div>
-		<div id="noTabs">There are no tabs open with that name.</div>
+		<div id="noTabs" class="hidden">There are no tabs open with that name.</div>
 	</body>
 </html>

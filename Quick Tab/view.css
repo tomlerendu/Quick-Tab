@@ -34,7 +34,6 @@ body
 	background-image: url('images/clear.png');
 	margin: 5px;
 	margin-right: 10px;
-	display: none;
 	cursor: pointer;
 }
 
