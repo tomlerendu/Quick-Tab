@@ -78,8 +78,7 @@ Search.prototype.searchInputKeydown = function(e, tabArray)
 
 Search.prototype.isValidSearchChar = function(e, modifier)
 {
-    //The key pressed event has key codes that are 32 higher than the key down event
-    keyCode = e.keyCode - modifier;
+    keyCode = e.keyCode;
 
     if(
         (keyCode >= 48 && keyCode <= 57) ||    //Numbers

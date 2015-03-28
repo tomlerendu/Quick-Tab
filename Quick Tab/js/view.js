@@ -11,12 +11,10 @@ function Manager()
 
     //User pressed a key in the search box
     this.search.searchInputReference.addEventListener('keydown', function(e) {
-        this.search.searchInputKeydown(e, this.tabArray);
-    }.bind(this));
-
-    this.search.searchInputReference.addEventListener('keypress', function(e){
-        if(!this.search.isValidSearchChar(e, 0))
+        if(!this.search.isValidSearchChar(e))
             e.preventDefault();
+        else
+            this.search.searchInputKeydown(e, this.tabArray);
     }.bind(this));
 
     //User clicked the clear search button
