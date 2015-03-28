@@ -10,7 +10,7 @@ Help.prototype.show = function()
         this.reference.classList.remove('hidden');
         this.buttonReference.addEventListener('click', function(event) {
             this.hide();
-        }).bind(this);
+        }.bind(this));
     }
 };
 
