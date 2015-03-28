@@ -1,25 +1,3 @@
-var Help = Class.create
-({
-	initialize : function()
-	{
-		//Show help if it's a fresh install
-		if(typeof localStorage.getItem('helpClosed') == "undefined")
-			this.showView();
-	},
-	
-	showView : function()
-	{
-		$('help').show();
-		$('helpButton').onclick = this.hideView;
-	},
-
-	hideView : function()
-	{
-		$('help').hide();
-		localStorage.setItem('helpClosed', true);
-	}
-});
-
 var Search = Class.create
 ({
 	initialize : function()
@@ -124,6 +102,9 @@ var Manager = Class.create
 		this.search = new Search();
 
 		this.tabArray = this.generateList()
+
+
+        this.help.show();
 
 		//User pressed a key in the search box
 		$('searchInput').addEventListener('keydown', function(e) {
