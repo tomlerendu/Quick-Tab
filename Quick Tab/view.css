@@ -10,6 +10,11 @@ body
 	margin: 0;
 }
 
+.hidden
+{
+    display: none !important;
+}
+
 #searchInput
 {
 	width: 255px;
