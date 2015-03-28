@@ -17,9 +17,9 @@ body
 
 #searchInput
 {
-	width: 255px;
+	width: 245px;
 	height: 20px;
-	padding: 5px;
+	padding: 10px 5px;
 	font-size: 17px;
 	border: none;
 	display: inline-block;
@@ -32,8 +32,7 @@ body
 	width: 20px;
 	height: 20px;
 	background-image: url('images/clear.png');
-	margin: 5px;
-	margin-right: 10px;
+	margin: 10px;
 	cursor: pointer;
 }
 
@@ -73,7 +72,8 @@ body
 #tabs
 {
 	font-family: Arial, sans-serif;
-	padding: 5px;
+	margin-top: 5px;
+    padding: 5px;
 	-webkit-user-select: none;
 	user-select: none;
 }
@@ -90,7 +90,6 @@ body
 {
 	background: #F1F8FF;
 	border: 1px solid #D9EDFF;
-	border-radius: 5px;
 }
 
 #tabs .tab .favicon
