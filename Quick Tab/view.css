@@ -7,7 +7,7 @@
 body
 {
 	width: 300px;
-	margin: 0px;
+	margin: 0;
 }
 
 #searchInput
@@ -53,8 +53,8 @@ body
 
 #help p, #help ul
 {
-	margin: 5px 0px;
-	font-family: 'Arial';
+	margin: 5px 0;
+	font-family: Arial, sans-serif;
 	font-size: 13px;
 	color: gray;
 	text-align: center;
@@ -69,7 +69,7 @@ body
 
 #tabs
 {
-	font-family: 'Arial';
+	font-family: Arial, sans-serif;
 	padding: 5px;
 	-webkit-user-select: none;
 	user-select: none;
@@ -111,7 +111,7 @@ body
 	line-height: 28px;
 	height: 28px;
 	width: 245px;
-	padding: 0px 6px;
+	padding: 0 6px;
 	overflow: hidden;
 	vertical-align: top;
 	font-size: 14px;
@@ -120,7 +120,7 @@ body
 #noTabs
 {
 	margin: 20px 5px;
-	font-family: 'Arial';
+	font-family: Arial, sans-serif;
 	font-size: 13px;
 	color: gray;
 	text-align: center;
