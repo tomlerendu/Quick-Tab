@@ -1,4 +1,4 @@
-function Tab(id, title, url, favIcon)
+function Tab(id, title, url, favIcon, manager)
 {
     //If there is no favicon for the page use the "blank" one
     if (
@@ -14,6 +14,8 @@ function Tab(id, title, url, favIcon)
     this.title = title;
     this.url = url;
     this.favIcon = favIcon;
+    this.manager = manager;
+    this.isVisible = true;
     this.view = this.buildView();
 }
 
@@ -32,13 +34,12 @@ Tab.prototype.buildView = function()
 
     var view = document.createElement('div');
     view.className = 'tab';
-    view.id = 'tab-' + this.id;
     view.appendChild(favView);
     view.appendChild(titleView);
 
-    view.addEventListener('mousedown', function (e) {
+    view.addEventListener('mousedown', function(e) {
 
-        switch (e.which) {
+        switch(e.which) {
             case 1:
                 //Left click, switch to the tab
                 this.switchTo();
@@ -50,11 +51,18 @@ Tab.prototype.buildView = function()
         }
     }.bind(this));
 
+    view.addEventListener('mouseover', function(e) {
+        this.manager.setSelectedTab(this.id);
+        this.manager.updateSelectedTab();
+    }.bind(this));
+
     return view;
 };
 
 Tab.prototype.visible = function(visible)
 {
+    this.isVisible = visible;
+
     if(visible)
         this.view.classList.remove('hidden');
     else
@@ -63,6 +71,7 @@ Tab.prototype.visible = function(visible)
 
 Tab.prototype.close = function()
 {
+    //todo: remove from tabArray
     this.view.parentNode.removeChild(this.view);
     chrome.tabs.remove(this.id);
 };

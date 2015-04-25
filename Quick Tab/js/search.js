@@ -19,8 +19,8 @@ Search.prototype.clear = function(tabArray)
     //Hide the clear button
     this.searchClearReference.classList.add('hidden');
     //Show all tabs
-    for(var tab in tabArray)
-        tabArray[tab].visible(true);
+    for(var i=0; i<tabArray.length; i++)
+        tabArray[i].visible(true);
     //Hide the no tabs matched notice
     this.noTabsReference.classList.add('hidden');
 };
@@ -33,13 +33,13 @@ Search.prototype.query = function(term, tabArray)
     var tabCounter = 0;
 
     //Match against each tab
-    for(var tab in tabArray) {
-        if(tabArray[tab].title.match(regex) || tabArray[tab].url.match(regex)) {
-            tabArray[tab].visible(true);
+    for(var i=0; i<tabArray.length; i++) {
+        if(tabArray[i].title.match(regex) || tabArray[i].url.match(regex)) {
+            tabArray[i].visible(true);
             tabCounter++;
         }
         else
-            tabArray[tab].visible(false);
+            tabArray[i].visible(false);
     }
 
     //No tabs matched message

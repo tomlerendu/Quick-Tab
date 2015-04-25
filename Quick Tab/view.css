@@ -86,10 +86,10 @@ body
 	cursor: pointer;
 }
 
-#tabs .tab:hover
+.tabSelected
 {
 	background: #F1F8FF;
-	border: 1px solid #D9EDFF;
+	border: 1px solid #cadcee !important;
 }
 
 #tabs .tab .favicon
