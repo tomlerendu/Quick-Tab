@@ -73,9 +73,6 @@ Manager.prototype.moveSelectedTab = function(down)
 
 Manager.prototype.updateSelectedTab = function()
 {
-    if(this.selectedTab == -1)
-        return;
-
     for(var i=0; i<this.tabArray.length; i++) {
         if(i == this.selectedTab)
             this.tabArray[i].view.classList.add('tabSelected');
