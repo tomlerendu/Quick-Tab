@@ -81,17 +81,25 @@ Manager.prototype.updateSelectedTab = function()
     }
 };
 
+
+Manager.prototype.switchToSelectedTab = function()
+{
+    this.tabArray[this.selectedTab].switchTo();
+}
+
 window.onload = function()
 {
 	document.oncontextmenu = function(e) {
         e.preventDefault();
     };
 
-    document.onkeydown = function(e) {;
+    document.onkeydown = function(e) {
         if(e.keyCode == 38)
             tabManager.moveSelectedTab(false);
-        if(e.keyCode == 40)
+        else if(e.keyCode == 40)
             tabManager.moveSelectedTab(true);
+        else if(e.keyCode == 13)
+            tabManager.switchToSelectedTab();
     };
 
     document.onmouseover = function(e) {
