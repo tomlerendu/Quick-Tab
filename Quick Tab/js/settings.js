@@ -2,48 +2,47 @@ window.onload = function() {
 
     //Clicking the "Configure shortcut" button
     document.querySelector('#shortcutLink').addEventListener('click', function() {
-        settings.setKeyboardShortcut();
+        settings.openLink('chrome://extensions/configureCommands');
     });
 
+    document.querySelector('#githubLink').addEventListener('click', function() {
+        settings.openLink('https://github.com/tomlerendu/Quick-Tab/issues/new');
+    });
+
+    var settings = new Settings();
+    settings.displayKeyboardShortcut();
 };
 
 function Settings()
 {
-    this.keyboardShortcut = null;
-
-    setInterval(this.checkKeyboardShortcut, 1000);
+    setInterval(this.displayKeyboardShortcut, 1000);
 }
 
-Settings.prototype.checkKeyboardShortcut = function()
+Settings.prototype.displayKeyboardShortcut = function()
 {
-    var self = this;
-
     chrome.commands.getAll(function(commands){
+
+        var foundShortcut = false;
+
         for(command in commands) {
-            if(commands[command]['name'] == '_execute_browser_action') {
-                self.keyboardShortcut = commands[command]['shortcut'];
+            if(commands[command]['name'] == '_execute_browser_action' && commands[command]['shortcut'] != '') {
+                document.querySelector('#keyboardShortcut').innerText = commands[command]['shortcut'];
+                foundShortcut = true;
                 break;
             }
         }
+
+        if (!foundShortcut) {
+            document.querySelector('#keyboardShortcut').innerText = '[Not set]';
+        }
+
     }.bind(this));
 };
 
-Settings.prototype.shouldShowHelp = function(version)
-{
-    return true;
-};
 
-Settings.prototype.getKeyboardShortcut = function()
-{
-    return this.keyboardShortcut;
-};
-
-Settings.prototype.setKeyboardShortcut = function()
+Settings.prototype.openLink = function(link)
 {
     chrome.tabs.create({
-        url: 'chrome://extensions/configureCommands'
+        url: link
     });
 };
-
-var settings = new Settings();
-console.log(settings.getKeyboardShortcut());
