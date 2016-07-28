@@ -6,7 +6,9 @@
 
 body
 {
-	width: 300px;
+	width: 400px;
+	font-size: 13px;
+    font-family: 'Open Sans', sans-serif;
 	margin: 0;
 }
 
@@ -17,13 +19,12 @@ body
 
 #searchInput
 {
-	width: 245px;
-	height: 20px;
-	padding: 10px 5px;
-	font-size: 17px;
+	width: calc(100% - 30px - 1rem);
+	padding: 1rem 0.5rem;
+	font-size: 1.2rem;
 	border: none;
 	display: inline-block;
-	text-indent: 5px;
+	text-indent: 0.25rem;
 }
 
 #searchClear
@@ -43,60 +44,66 @@ body
 
 .divider
 {
-	width: 300px;
 	height: 1px;
-	background-image: url('images/divider.png');
+	background-color: #dfdfdf;
+    margin: 0 0.5rem;
 }
 
 #help
 {
-	margin: 5px;
+    background: #3763c1;
+	padding: 1rem 2rem;
+    margin: 2rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+
+#help p
+{
+    text-align: center;
+    font-size: 1rem;
 }
 
 #help p, #help ul
 {
-	margin: 5px 0;
 	font-family: Arial, sans-serif;
-	font-size: 13px;
-	color: gray;
-	text-align: center;
+    padding: 1rem 0;
 }
 
 #help button
 {
 	display: block;
-	width: 100px;
-	margin: 5px auto;
+	background: white;
+    border-radius: 0.25rem;
+	margin: 0.5rem auto;
+    padding: 0.5rem;
 }
 
 #tabs
 {
 	font-family: Arial, sans-serif;
-	margin-top: 5px;
-    padding: 5px;
+	margin-top: 0.25rem;
+    padding: 0.25rem;
 	-webkit-user-select: none;
 	user-select: none;
 }
 
 #tabs .tab
 {
-	width: 285px;
-	height: 28px;
-	border: 1px solid white;
+    padding: 0.25rem;
 	cursor: pointer;
 }
 
 .tabSelected
 {
-	background: #F1F8FF;
-	border: 1px solid #cadcee !important;
+	background: #e4f1ff;
 }
 
 #tabs .tab .favicon
 {
 	width: 16px;
 	height: 16px;
-	padding: 6px;
+	padding: 0.25rem;
 	overflow: hidden;
 	display: inline-block;
 }
@@ -110,13 +117,10 @@ body
 #tabs .tab .title
 {
 	display: inline-block;
-	line-height: 28px;
-	height: 28px;
-	width: 245px;
-	padding: 0 6px;
+	line-height: 1rem;
+	height: 1rem;
+    padding: 0.25rem;
 	overflow: hidden;
-	vertical-align: top;
-	font-size: 14px;
 }
 
 #noTabs
