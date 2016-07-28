@@ -1,5 +1,6 @@
-function Search()
+function Search(delegate)
 {
+    this.delegate = delegate;
     this.searchInputReference = document.querySelector('#searchInput');
     this.searchClearReference = document.querySelector('#searchClear');
     this.noTabsReference = document.querySelector('#noTabs');
@@ -43,10 +44,12 @@ Search.prototype.query = function(term, tabArray)
     }
 
     //No tabs matched message
-    if(tabCounter == 0)
+    if(tabCounter == 0) {
         this.noTabsReference.classList.remove('hidden');
-    else
+    } else {
         this.noTabsReference.classList.add('hidden');
+        this.delegate.selectFirstTab();
+    }
 };
 
 Search.prototype.searchInputKeydown = function(e, tabArray)

@@ -1,7 +1,7 @@
 function Manager()
 {
     this.help = new Help();
-    this.search = new Search();
+    this.search = new Search(this);
 
     this.tabReference = document.querySelector('#tabs');
     this.tabArray = this.generateList();
@@ -11,10 +11,11 @@ function Manager()
 
     //User pressed a key in the search box
     this.search.searchInputReference.addEventListener('keydown', function(e) {
-        if(!this.search.isValidSearchChar(e))
+        if(!this.search.isValidSearchChar(e)) {
             e.preventDefault();
-        else
+        } else {
             this.search.searchInputKeydown(e, this.tabArray);
+        }
     }.bind(this));
 
     //User clicked the clear search button
@@ -65,8 +66,11 @@ Manager.prototype.moveSelectedTab = function(down)
             currentTab = visibleTabs.length - 1;
     }
 
-    this.selectedTab = down ? visibleTabs[Math.min(visibleTabs.length-1, currentTab+1)]
-                            : visibleTabs[Math.max(0, currentTab-1)];
+    if (down) {
+        this.selectedTab = visibleTabs[Math.min(visibleTabs.length - 1, currentTab + 1)];
+    } else {
+        this.selectedTab = visibleTabs[Math.max(0, currentTab-1)];
+    }
 
     this.updateSelectedTab();
 };
@@ -74,7 +78,7 @@ Manager.prototype.moveSelectedTab = function(down)
 Manager.prototype.updateSelectedTab = function()
 {
     for(var i=0; i<this.tabArray.length; i++) {
-        if(i == this.selectedTab)
+        if (i == this.selectedTab)
             this.tabArray[i].view.classList.add('tabSelected');
         else
             this.tabArray[i].view.classList.remove('tabSelected');
@@ -85,7 +89,18 @@ Manager.prototype.updateSelectedTab = function()
 Manager.prototype.switchToSelectedTab = function()
 {
     this.tabArray[this.selectedTab].switchTo();
-}
+};
+
+Manager.prototype.selectFirstTab = function()
+{
+    for(var i=0; i<this.tabArray.length; i++) {
+        if (this.tabArray[i].isVisible) {
+            this.selectedTab = i;
+            this.updateSelectedTab();
+            break;
+        }
+    }
+};
 
 window.onload = function()
 {
