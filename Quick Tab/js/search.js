@@ -52,27 +52,12 @@ Search.prototype.query = function(term, tabArray)
     }
 };
 
-Search.prototype.searchInputKeydown = function(e, tabArray)
+Search.prototype.searchInputKeyup = function(e, tabArray)
 {
     if(!this.isValidSearchChar(e, 0))
         return;
 
-    var term;
-
-    if (e.keyCode == 13) {
-        // enter
-        var el = $$('.tab').find(function(el) { return el.visible(); });
-        var tabId = parseInt(el.id.replace('tab-', ''));
-        if (tabId) {
-            chrome.tabs.update(tabId, {selected: true});
-            window.close();
-        }
-        return;
-    } else if (e.keyCode == 8) {
-        term = this.searchInputReference.value.substring(0, this.searchInputReference.value.length - 1);
-    }
-    else
-        term = this.searchInputReference.value.concat(String.fromCharCode(e.keyCode));
+    var term = this.searchInputReference.value;
 
     if(term.length != 0)
     {

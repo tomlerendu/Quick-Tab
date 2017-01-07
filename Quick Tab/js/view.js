@@ -9,12 +9,22 @@ function Manager()
 
     this.help.show();
 
-    //User pressed a key in the search box
+    // Block up and down arrows in search box to prevent repositioning of carret to beginning/end
     this.search.searchInputReference.addEventListener('keydown', function(e) {
-        if(!this.search.isValidSearchChar(e)) {
+        keyCode = e.keyCode;
+
+        if(
+            keyCode == 38 ||					   //Up
+            keyCode == 40   					   //Down
+        ){
             e.preventDefault();
-        } else {
-            this.search.searchInputKeydown(e, this.tabArray);
+        }
+    }.bind(this));
+    
+    //User pressed a key in the search box
+    this.search.searchInputReference.addEventListener('keyup', function(e) {
+        if(this.search.isValidSearchChar(e)) {
+            this.search.searchInputKeyup(e, this.tabArray);
         }
     }.bind(this));
 
