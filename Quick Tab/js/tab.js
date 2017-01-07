@@ -1,4 +1,4 @@
-function Tab(id, title, url, favIcon, manager)
+function Tab(id, windowId, title, url, favIcon, manager)
 {
     //If there is no favicon for the page use the "blank" one
     if (
@@ -11,6 +11,7 @@ function Tab(id, title, url, favIcon, manager)
 
     //Create the properties
     this.id = id;
+    this.windowId = windowId;
     this.title = title;
     this.url = url;
     this.favIcon = favIcon;
@@ -84,5 +85,6 @@ Tab.prototype.close = function()
 Tab.prototype.switchTo = function()
 {
     chrome.tabs.update(this.id, {selected: true});
+    chrome.windows.update(this.windowId, {focused:true});
     window.close();
 };
