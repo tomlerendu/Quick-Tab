@@ -1,0 +1,21 @@
+.option {
+    padding-bottom: 1rem;
+}
+
+.popupWidth {
+    margin-left: 12.5%;
+    margin-right: 12.5%;
+    width: 75%;
+}
+
+.sizes {
+    font-size: 0;
+}
+
+.sizes > div {
+    width: 25%;
+    display: inline-block;
+    color: gray;
+    font-size: 0.7rem;
+    text-align: center;
+}

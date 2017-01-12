@@ -3,15 +3,26 @@
     <head>
         <script type="text/javascript" src="js/settings.js"></script>
         <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/options.css">
     </head>
     <body>
-        <p>
+        <div class="option">
+            <h2>Size</h2>
+            <input type="range" class="popupWidth" min="1" max="4" step="1">
+            <div class="sizes">
+                <div class="small">Small</div>
+                <div class="medium">Medium</div>
+                <div class="large">Large</div>
+                <div class="gigantic">Gigantic</div>
+            </div>
+        </div>
+        <div class="option">
             <h2>Shortcut</h2>
             Open Quick Tab using <b id="keyboardShortcut"></b> - <a href="#" id="shortcutLink">Configure</a>
-        </p>
-        <p>
+        </div>
+        <div class="option">
             <h2>Website</h2>
             To suggest features please visit the <a href="#" id="githubLink">Github</a> page.
-        </p>
+        </div>
     </body>
 </html>

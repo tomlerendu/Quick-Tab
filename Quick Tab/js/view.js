@@ -127,9 +127,11 @@ window.onload = function()
             tabManager.switchToSelectedTab();
     };
 
-    document.onmouseover = function(e) {
-
-    };
+    if (typeof localStorage['popup.width'] == 'undefined') {
+        document.body.style.width = '400px';
+    } else {
+        document.body.style.width = localStorage['popup.width'] * 200 + 'px';
+    }
 
 	var tabManager = new Manager();
 };
