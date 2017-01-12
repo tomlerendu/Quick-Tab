@@ -37,10 +37,10 @@ function Manager()
 Manager.prototype.generateList = function()
 {
 	var tabArray = [];
-	chrome.tabs.getAllInWindow(null, function(tabs) {
+	chrome.tabs.query({}, function(tabs) {
 		for(var i=0; i<tabs.length; i++) {
             //Create an object for each tab
-            var tab = new Tab(tabs[i].id, tabs[i].title, tabs[i].url, tabs[i].favIconUrl, this);
+            var tab = new Tab(tabs[i].id, tabs[i].windowId, tabs[i].title, tabs[i].url, tabs[i].favIconUrl, this);
 			//Add the object to the tab array
 			tabArray.push(tab);
 			//Add to the tabs view
