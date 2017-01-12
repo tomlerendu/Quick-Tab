@@ -33,7 +33,7 @@ body
 	width: 20px;
 	height: 20px;
 	background-image: url('images/clear.png');
-	margin: 1rem;
+	margin: 1.25rem 1rem;
 	cursor: pointer;
 }
 
