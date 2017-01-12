@@ -139,6 +139,12 @@ body
 {
 	margin: 2rem 1rem;
 	font-family: Arial, sans-serif;
-	color: gray;
+	color: #a9a9a9;
 	text-align: center;
+	padding-bottom: 1rem;
+}
+
+#sadFace
+{
+	font-size: 3rem;
 }
