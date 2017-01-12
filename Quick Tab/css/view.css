@@ -31,14 +31,14 @@ body
 	float: right;
 	width: 20px;
 	height: 20px;
-	background-image: url('images/clear.png');
+	background-image: url('../images/clear.png');
 	margin: 1.25rem 1rem;
 	cursor: pointer;
 }
 
 #searchClear:hover
 {
-	background-image: url('images/clear_hover.png');
+	background-image: url('../images/clear_hover.png');
 }
 
 .divider
