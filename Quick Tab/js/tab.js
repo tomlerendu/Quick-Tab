@@ -76,7 +76,12 @@ Tab.prototype.visible = function(visible)
 
 Tab.prototype.close = function()
 {
-    //todo: remove from tabArray
+	var array = this.manager.tabArray;
+	var index = array.indexOf(this);
+	if(index > -1){
+		array.splice(index, 1);
+	}
+	
     this.view.parentNode.removeChild(this.view);
     chrome.tabs.remove(this.id);
 };

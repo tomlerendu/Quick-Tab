@@ -29,6 +29,10 @@ Search.prototype.clear = function(tabArray)
 
 Search.prototype.query = function(term, tabArray)
 {
+    //Remove unneeded spaces
+    term = term.replace(/  +/g, " ");
+    //allow searching for parts of expressions. Space is delimiter.
+    term = term.split(" ").join(".*?");
     //The term that must be matched
     var regex = new RegExp('(' + term + ')', 'gi');
     var tabCounter = 0;
