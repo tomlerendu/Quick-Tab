@@ -119,12 +119,21 @@ window.onload = function()
     };
 
     document.onkeydown = function(e) {
-        if(e.keyCode == 38)
-            tabManager.moveSelectedTab(false);
-        else if(e.keyCode == 40)
-            tabManager.moveSelectedTab(true);
-        else if(e.keyCode == 13)
-            tabManager.switchToSelectedTab();
+        switch (e.keyCode) {
+            case 38:
+                tabManager.moveSelectedTab(false);
+                break;
+            case 40:
+                tabManager.moveSelectedTab(true);
+                break;
+            case 13:
+                tabManager.switchToSelectedTab();
+                break;
+            case 27:
+                window.close();
+                break;
+        }
+
     };
 
     if (typeof localStorage['popup.width'] == 'undefined') {
