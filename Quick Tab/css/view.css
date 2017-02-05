@@ -7,7 +7,7 @@
 body
 {
 	font-size: 13px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: 'Roboto', sans-serif;
 	margin: 0;
 }
 
@@ -87,7 +87,6 @@ body
 
 #tabs
 {
-	font-family: Arial, sans-serif;
 	margin-top: 0.25rem;
     padding: 0.5rem;
 	-webkit-user-select: none;
@@ -124,7 +123,7 @@ body
 #tabs .tab .title
 {
 	display: inline-block;
-	line-height: 1rem;
+	line-height: 1.1rem;
 	height: 1rem;
     padding: 0.3rem 0.25rem;
     white-space: nowrap;
@@ -137,7 +136,6 @@ body
 #noTabs
 {
 	margin: 2rem 1rem;
-	font-family: Arial, sans-serif;
 	color: #a9a9a9;
 	text-align: center;
 	padding-bottom: 1rem;
