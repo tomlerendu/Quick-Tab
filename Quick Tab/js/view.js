@@ -156,10 +156,12 @@ window.onload = function()
 
     document.onkeydown = function(e) {
         switch (e.keyCode) {
+            case 37:
             case 38:
                 tabManager.moveSelectedTab(false);
                 e.preventDefault();
                 break;
+            case 39:
             case 40:
                 tabManager.moveSelectedTab(true);
                 e.preventDefault();
