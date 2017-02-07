@@ -58,7 +58,7 @@ Tab.prototype.buildView = function()
     }.bind(this));
 
     view.addEventListener('mouseout', function(e) {
-        this.manager.selectedTab = -1;
+        this.manager.resetSelectedTab();
         this.manager.updateSelectedTab();
     }.bind(this));
 

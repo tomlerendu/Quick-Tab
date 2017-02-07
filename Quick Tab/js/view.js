@@ -7,6 +7,8 @@ function Manager()
     this.tabArray = this.generateList();
     this.selectedTab = -1;
 
+    this.tabLock = false;
+
     this.help.show();
 
     // Block up and down arrows in search box to prevent repositioning of carret to beginning/end
@@ -53,13 +55,22 @@ Manager.prototype.generateList = function()
 
 Manager.prototype.setSelectedTab = function(tabId)
 {
-    var i=0;
-    while(i<this.tabArray.length) {
-        if(this.tabArray[i].id == tabId) {
-            this.selectedTab = i;
-            break;
+    if (!this.tabLock) {
+
+        var i = 0;
+        while (i < this.tabArray.length) {
+            if (this.tabArray[i].id == tabId) {
+                this.selectedTab = i;
+                break;
+            }
+            i++;
         }
-        i++;
+    }
+};
+
+Manager.prototype.resetSelectedTab = function() {
+    if (!this.tabLock) {
+        this.selectedTab = -1;
     }
 };
 
@@ -82,7 +93,28 @@ Manager.prototype.moveSelectedTab = function(down)
         this.selectedTab = visibleTabs[Math.max(0, currentTab-1)];
     }
 
+    this.updateViewOffset();
     this.updateSelectedTab();
+    this.tabLock = true;
+};
+
+Manager.prototype.updateViewOffset = function()
+{
+    var top = document.body.scrollTop;
+    var bottom = top + window.innerHeight;
+
+    var bounds = this.tabArray[this.selectedTab].view.getBoundingClientRect();
+    var tabTop = bounds.top + window.pageYOffset - document.documentElement.clientTop;
+    var tabBottom = bounds.bottom + window.pageYOffset - document.documentElement.clientTop;
+    var moveDistance = tabBottom - tabTop;
+
+    if (tabTop - top < moveDistance * 2) {
+        document.body.scrollTop -= moveDistance;
+    }
+
+    if (bottom - tabBottom < moveDistance * 2) {
+        document.body.scrollTop += moveDistance;
+    }
 };
 
 Manager.prototype.updateSelectedTab = function()
@@ -114,6 +146,10 @@ Manager.prototype.selectFirstTab = function()
 
 window.onload = function()
 {
+    document.onmousemove = function() {
+        tabManager.tabLock = false;
+    };
+
 	document.oncontextmenu = function(e) {
         e.preventDefault();
     };
@@ -122,9 +158,11 @@ window.onload = function()
         switch (e.keyCode) {
             case 38:
                 tabManager.moveSelectedTab(false);
+                e.preventDefault();
                 break;
             case 40:
                 tabManager.moveSelectedTab(true);
+                e.preventDefault();
                 break;
             case 13:
                 tabManager.switchToSelectedTab();
