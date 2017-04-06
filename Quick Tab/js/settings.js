@@ -13,9 +13,14 @@ window.onload = function() {
         localStorage['popup.width'] = e.target.value;
     });
 
+    document.querySelector('#displayTabsFromAllWindows').addEventListener('change', function(e) {
+        localStorage['display.tabs.from.all.windows'] = e.target.checked;
+    });
+
     var settings = new Settings();
     settings.displayKeyboardShortcut();
     settings.setupWidthSlider();
+    settings.setupDisplayTabsFromAllWindows();
 };
 
 function Settings()
@@ -61,4 +66,14 @@ Settings.prototype.openLink = function(link)
     chrome.tabs.create({
         url: link
     });
+};
+
+Settings.prototype.setupDisplayTabsFromAllWindows = function()
+{
+    var storedValue = localStorage['display.tabs.from.all.windows'];
+    if (typeof storedValue === 'undefined') {
+        document.querySelector('#displayTabsFromAllWindows').checked = true;
+    } else {
+        document.querySelector('#displayTabsFromAllWindows').checked = (storedValue === "true");
+    }
 };

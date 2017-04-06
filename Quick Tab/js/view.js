@@ -39,7 +39,11 @@ function Manager()
 Manager.prototype.generateList = function()
 {
 	var tabArray = [];
-	chrome.tabs.query({}, function(tabs) {
+	var query = {};
+    if (localStorage['display.tabs.from.all.windows'] === 'false') {
+        query.currentWindow = true;
+    }
+	chrome.tabs.query(query, function(tabs) {
 		for(var i=0; i<tabs.length; i++) {
             //Create an object for each tab
             var tab = new Tab(tabs[i].id, tabs[i].windowId, tabs[i].title, tabs[i].url, tabs[i].favIconUrl, this);
