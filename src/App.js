@@ -1,14 +1,22 @@
 import React from 'react';
-import './App.css';
+import { TabList } from "./components/tab-list/tab-list";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-aaasdasdadsss
-      </header>
-    </div>
-  );
+export default class extends React.Component {
+  state = {
+    tabs: [],
+  };
+
+  constructor(props) {
+    super(props);
+
+    chrome.tabs.query({}, tabs => this.setState({ tabs }));
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <TabList tabs={ this.state.tabs }/>
+      </div>
+    );
+  }
 }
-
-export default App;
