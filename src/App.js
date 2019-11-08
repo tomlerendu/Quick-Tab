@@ -1,21 +1,16 @@
 import React from 'react';
 import { TabList } from "./components/tab-list/tab-list";
+import chrome from './browser-providers/chrome';
 
 export default class extends React.Component {
-  state = {
-    tabs: [],
-  };
-
   constructor(props) {
     super(props);
-
-    chrome.tabs.query({}, tabs => this.setState({ tabs }));
   }
 
   render() {
     return (
       <div className="App">
-        <TabList tabs={ this.state.tabs }/>
+        <TabList browserProvider={ chrome }/>
       </div>
     );
   }

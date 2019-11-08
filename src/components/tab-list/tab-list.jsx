@@ -5,8 +5,17 @@ import { Tab } from '../tab/tab';
 
 export class TabList extends React.Component {
   state = {
+    tabs: [],
     currentlySelectedTab: null,
   };
+
+  constructor(props) {
+    super(props);
+
+    props.browserProvider
+      .getTabs()
+      .then(tabs => this.setState({ tabs }))
+  }
 
   mouseEnteredTab(tab) {
     this.setState({
@@ -27,25 +36,25 @@ export class TabList extends React.Component {
       return;
     }
 
-    let index = this.props.tabs.indexOf(this.state.currentlySelectedTab);
+    let index = this.state.tabs.indexOf(this.state.currentlySelectedTab);
 
     if (['ArrowUp', 'ArrowLeft'].includes(event.key)) {
       index = Math.max(0, index - 1);
     }
 
     if (['ArrowDown', 'ArrowRight'].includes(event.key)) {
-      index = Math.min(this.props.tabs.length - 1, index + 1);
+      index = Math.min(this.state.tabs.length - 1, index + 1);
     }
 
     this.setState({
-      currentlySelectedTab: this.props.tabs[index],
+      currentlySelectedTab: this.state.tabs[index],
     });
   }
 
   render() {
     return (
       <div>
-        { this.props.tabs.map(tab => {
+        { this.state.tabs.map(tab => {
           return <Tab key={ tab.id }
                       tab={ tab }
                       selected={ this.state.currentlySelectedTab === tab }
@@ -57,5 +66,5 @@ export class TabList extends React.Component {
 }
 
 TabList.propTypes = {
-  tabs: PropTypes.array,
+  browserProvider: PropTypes.object,
 };
