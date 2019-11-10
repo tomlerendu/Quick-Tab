@@ -1,18 +1,18 @@
-export default class {
+export default {
 
-  getTabs() {
+  getTabs: () => {
     return new Promise(
-      (resolve) => chrome.tabs.query({}, tabs => resolve({ tabs }))
+      (resolve) => chrome.tabs.query({}, tabs => resolve(tabs))
     );
-  }
+  },
 
-  switchToTab(tab) {
+  switchToTab: tab => {
     chrome.tabs.update(tab.id, { selected: true });
     chrome.windows.update(tab.windowId, { focused: true });
-  }
+  },
 
-  closeTab(tab) {
+  closeTab: tab => {
     chrome.tabs.remove(tab.id);
-  }
+  },
 
 }

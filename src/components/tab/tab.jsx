@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 export class Tab extends React.Component {
   render() {
     return (
-      <div className={ `flex p-2 cursor-pointer ${ this.props.selected ? 'bg-blue-100' : '' }` }>
+      <div className={ `flex p-2 cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
         <div className={ 'w-16' }>
           <img className={ 'w-16' } src={ this.props.tab.favIconUrl }/>
         </div>
@@ -17,5 +17,5 @@ export class Tab extends React.Component {
 
 Tab.propTypes = {
   tab: PropTypes.object,
-  selected: PropTypes.bool,
+  isSelected: PropTypes.bool,
 };
