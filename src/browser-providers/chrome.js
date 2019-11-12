@@ -1,8 +1,11 @@
 export default {
 
-  getTabs: () => {
+  getTabs: (onlyCurrentWindow = false) => {
     return new Promise(
-      (resolve) => chrome.tabs.query({}, tabs => resolve(tabs))
+      (resolve) => chrome.tabs.query(
+        { currentWindow: onlyCurrentWindow ? true : undefined },
+        tabs => resolve(tabs)
+      ),
     );
   },
 
