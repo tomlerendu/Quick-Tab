@@ -63,15 +63,21 @@ export class Options extends React.Component {
 
   render() {
     return (
-      <div className={ 'flex' }>
-        <div className={ 'flex-1' }>
-          <h1>Quick Tab</h1>
-          <h2>Shortcut</h2>
-          { this.state.browserActionShortcut
-            ? <p>Open Quick Tab using <strong>{ this.state.browserActionShortcut }</strong>.</p>
-            : <p>No shortcut configured to open Quick Tab.</p>
-          }
-          <a onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>Configure</a>
+      <div className={ 'flex m-5 text-gray-800' } style={ {width: '800px'}}>
+        <div className={ 'w-3/5' }>
+          <div className={ 'py-2' }>
+            <h2 className={ 'text-lg my-2' }>Shortcut</h2>
+            <p>
+              { this.state.browserActionShortcut
+                ? <span className={ 'pr-2 '}>Open Quick Tab using <strong>{ this.state.browserActionShortcut }</strong></span>
+                : <span className={ 'pr-2' }>No shortcut configured to open Quick Tab</span>
+              }
+              —
+              <a className={ 'text-blue-700 pl-2 cursor-pointer hover:underline' } onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>
+                Configure
+              </a>
+            </p>
+          </div>
           <OptionGroup title={ 'Show Tabs From' }
                        options={ { current: 'The current window', all: 'All windows' } }
                        value={ this.state.options.showTabsFrom }
@@ -88,11 +94,13 @@ export class Options extends React.Component {
                        options={ { 300: 'Small', 400: 'Medium', 600: 'Large', 800: 'Gigantic' } }
                        value={ this.state.options.height }
                        valueUpdated={ value => this.handleOptionUpdated('height', value) } />
-          <h2>About</h2>
-          <p>Request features using the ??? page</p>
-          <p>Translations</p>
+          <div className={ 'py-2' }>
+            <h2 className={ 'text-lg my-2' }>About</h2>
+            <p>Request features using the ??? page</p>
+            <p>Translations</p>
+          </div>
         </div>
-        <div className={ 'flex-1' }>
+        <div className={ 'w-2/5 border border-gray-400' }>
           <TabList browserProvider={ embeddedInOptions } />
         </div>
       </div>

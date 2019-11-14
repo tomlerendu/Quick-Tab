@@ -10,8 +10,8 @@ export class OptionGroup extends React.Component {
 
   render() {
     return (
-      <div className={ 'flex-col' }>
-        <h2>{ this.props.title }</h2>
+      <div className={ 'py-2' }>
+        <h2 className={ 'text-lg my-2' }>{ this.props.title }</h2>
         { this.renderOptions() }
       </div>
     );
@@ -19,14 +19,16 @@ export class OptionGroup extends React.Component {
 
   renderOptions() {
     return Object.keys(this.props.options).map(value => {
-      return <div key={ `option-${this.props.title}-${ value }` }>
+      return <div className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2' }
+                  key={ `option-${this.props.title}-${ value }` }>
         <input type="radio"
                id={ `option-${this.props.title}-${ value }` }
                name={ `option-${this.props.title}`}
                value={ value }
                checked={ String(this.props.value) === String(value) }
-               onChange={ event => this.handleOptionChanged(event) }/>
-        <label htmlFor={ `option-${this.props.title}-${ value }` }>
+               onChange={ event => this.handleOptionChanged(event) }
+               className={ 'px-4 py-2 inline-block cursor-pointer' }/>
+        <label className={ 'px-4 py-2 inline-block cursor-pointer' } htmlFor={ `option-${this.props.title}-${ value }` }>
           { this.props.options[value] }
         </label>
       </div>
