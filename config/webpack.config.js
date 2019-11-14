@@ -90,7 +90,7 @@ module.exports = function(webpackEnv) {
         options: cssOptions,
       },
       {
-        // Options for PostCSS as we reference these options twice
+        // OptionGroup for PostCSS as we reference these options twice
         // Adds vendor prefixing based on your specified browser support in
         // package.json
         loader: require.resolve('postcss-loader'),
@@ -599,7 +599,7 @@ module.exports = function(webpackEnv) {
         new WatchMissingNodeModulesPlugin(paths.appNodeModules),
       isEnvProduction &&
         new MiniCssExtractPlugin({
-          // Options similar to the same options in webpackOptions.output
+          // OptionGroup similar to the same options in webpackOptions.output
           // both options are optional
           filename: 'static/css/[name].[contenthash:8].css',
           chunkFilename: 'static/css/[name].[contenthash:8].chunk.css',
