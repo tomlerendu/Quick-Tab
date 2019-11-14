@@ -13,7 +13,6 @@ https://chrome.google.com/webstore/detail/quick-tab/bdeifmcaonlafkglbdpbbhkeecjn
 
 1. Clone repo
 2. `yarn`
-3. `cp .env.example .env`
-4. `yarn watch`
-5. Load unpacked extension in Chrome
+3. `yarn watch`
+4. Load unpacked extension in Chrome
 

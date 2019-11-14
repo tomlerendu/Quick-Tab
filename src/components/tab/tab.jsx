@@ -7,10 +7,8 @@ export class Tab extends React.Component {
   render() {
     return (
       <div className={ `flex p-4 cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
-        <div className={ 'w-px-16' }>
-          { this.renderFavIcon() }
-        </div>
-        <div className={ 'w-auto' }>{ this.props.tab.title }</div>
+        { this.renderFavIcon() }
+        <div className={ 'text-gray-900 tab-title' }>{ this.props.tab.title }</div>
       </div>
     );
   }
@@ -28,7 +26,7 @@ export class Tab extends React.Component {
       ? 'images/blank.png'
       : this.props.tab.favIconUrl;
 
-    return <img className={ 'w-px-16' }
+    return <img className={ 'tab-icon mr-4' }
                 src={ url }
                 alt={ `${ this.props.tab.title }  Icon` } />;
   }

@@ -7,10 +7,10 @@ import { Search } from '../search/search';
 export class TabList extends React.Component {
 
   state = {
+    isReady: false,
     tabs: [],
+    filteredTabs: [],
     currentlySelectedTab: null,
-    searchTerm: '',
-    searchFocused: true,
   };
 
   constructor(props) {
@@ -18,7 +18,11 @@ export class TabList extends React.Component {
 
     props.browserProvider
       .getTabs()
-      .then(tabs => this.setState({ tabs }))
+      .then(tabs => this.setState({
+        tabs,
+        filteredTabs: [...tabs],
+        isReady: true
+      }));
   }
 
   mouseEnteredTab(tab) {
@@ -36,7 +40,7 @@ export class TabList extends React.Component {
   }
 
   handleKeyPress(event) {
-    if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+    if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       this.handleArrowKeyPress(event.key);
     }
 
@@ -48,11 +52,11 @@ export class TabList extends React.Component {
   handleArrowKeyPress(key) {
     let index = this.state.tabs.indexOf(this.state.currentlySelectedTab);
 
-    if (['ArrowUp', 'ArrowLeft'].includes(key)) {
+    if (['ArrowUp'].includes(key)) {
       index = Math.max(0, index - 1);
     }
 
-    if (['ArrowDown', 'ArrowRight'].includes(key)) {
+    if (['ArrowDown'].includes(key)) {
       index = Math.min(this.state.tabs.length - 1, index + 1);
     }
 
@@ -68,7 +72,26 @@ export class TabList extends React.Component {
   }
 
   handleSearchTermUpdate(searchTerm) {
-    this.setState({ searchTerm });
+    let filteredTabs;
+
+    if (searchTerm !== '') {
+      const regexSearchTerm = searchTerm
+        .replace(/  +/g, ' ')
+        .split(' ')
+        .join('.*?')
+        .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+
+      const searchTermRegex = new RegExp(`(${ regexSearchTerm })`, 'gi');
+
+      filteredTabs = this.state.tabs.filter(tab => tab.title.match(searchTermRegex));
+    } else {
+      filteredTabs = [...this.state.tabs];
+    }
+
+    this.setState({
+      filteredTabs,
+      currentlySelectedTab: filteredTabs.length && searchTerm.length ? filteredTabs[0] : null,
+    });
   }
 
   handleTabClick(tab) {
@@ -92,34 +115,24 @@ export class TabList extends React.Component {
   }
 
   render() {
+    if (!this.state.isReady) {
+      return null;
+    }
+
     return (
       <div>
-        <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) }
-                enterKeyPressed={ () => this.handleEnterKeyPress() } />
+        <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) } />
         { this.renderTabs() }
       </div>
     );
   }
 
   renderTabs() {
-    let tabs = this.state.tabs;
-
-    if (this.state.searchTerm !== '') {
-      const searchTerm = this.state.searchTerm
-        .replace(/  +/g, ' ')
-        .split(' ')
-        .join('.*?');
-
-      const searchTermRegex = new RegExp(`(${ searchTerm })`, 'gi');
-
-      tabs = tabs.filter(tab => tab.title.match(searchTermRegex));
-    }
-
-    if (tabs.length === 0) {
+    if (this.state.filteredTabs.length === 0) {
       return this.renderNoTabsFound();
     }
 
-    return tabs.map(tab => {
+    return this.state.filteredTabs.map(tab => {
       return <div key={ tab.id }
                   onClick={ () => this.handleTabClick(tab) }
                   onContextMenu={ event => this.handleTabContextMenuClick(event, tab) }
@@ -131,11 +144,11 @@ export class TabList extends React.Component {
   }
 
   renderNoTabsFound() {
-    return <div className="p-4">
-      <p>
-        <span role="img" aria-label="Shocked face emoji">😱</span>
+    return <div className={ 'py-12 text-center text-gray-600' }>
+      <p className={ 'text-6xl' }>
+        <span role={ 'img' } aria-label={ 'Shocked face emoji' }>😱</span>
       </p>
-      <p>No tabs found</p>
+      <p className={ 'text-xl' }>No tabs found</p>
     </div>
   }
 

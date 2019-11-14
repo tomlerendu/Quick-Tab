@@ -4,20 +4,18 @@ import PropTypes from 'prop-types';
 
 export class Search extends React.Component {
 
-  handleKeyPress(event) {
-    event.key === 'Enter'
-      ? this.props.enterKeyPressed()
-      : this.props.searchTermUpdated(event.target.value);
+  handleInput(event) {
+    this.props.searchTermUpdated(event.target.value);
   }
 
   render() {
     return (
-      <div className="flex">
-        <input className="flex-1 p-4 outline-none"
-               type="text"
-               placeholder="Quick Tab"
+      <div className={ 'flex' }>
+        <input className={ 'flex-1 p-4 text-xl outline-none bg-gray-100 border-gray-200 border-b' }
+               type={ 'text' }
+               placeholder={ 'Quick Tab' }
                autoFocus
-               onKeyUp={ event => this.handleKeyPress(event) }/>
+               onInput={ event => this.handleInput(event) }/>
       </div>
     );
   }

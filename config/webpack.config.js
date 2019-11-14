@@ -33,9 +33,6 @@ const appPackageJson = require(paths.appPackageJson);
 
 // Source maps are resource heavy and can cause out of memory issue for large source files.
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false';
-// Some apps do not need the benefits of saving a web request, so not inlining the chunk
-// makes for a smoother build process.
-const shouldInlineRuntimeChunk = process.env.INLINE_RUNTIME_CHUNK !== 'false';
 
 const imageInlineSizeLimit = parseInt(
   process.env.IMAGE_INLINE_SIZE_LIMIT || '10000'
@@ -544,12 +541,6 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),
-      // Inlines the webpack runtime script. This script is too small to warrant
-      // a network request.
-      // https://github.com/facebook/create-react-app/issues/5358
-      isEnvProduction &&
-        shouldInlineRuntimeChunk &&
-        new InlineChunkHtmlPlugin(HtmlWebpackPlugin, [/runtime-.+[.]js/]),
       // Makes some environment variables available in index.html.
       // The public URL is available as %PUBLIC_URL% in index.html, e.g.:
       // <link rel="icon" href="%PUBLIC_URL%/favicon.ico">

@@ -1,0 +1,12 @@
+.tab {
+  &-icon {
+    width: 16px;
+    height: 16px;
+  }
+
+  &-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
