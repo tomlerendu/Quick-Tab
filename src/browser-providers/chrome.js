@@ -4,7 +4,7 @@ export default {
     return new Promise(
       resolve => chrome.tabs.query(
         { currentWindow: onlyCurrentWindow ? true : undefined },
-        tabs => resolve(tabs)
+        tabs => resolve(tabs),
       ),
     );
   },
@@ -16,6 +16,29 @@ export default {
 
   closeTab: tab => {
     chrome.tabs.remove(tab.id);
+  },
+
+  openConfigureBrowserActionShortcut: () => {
+    chrome.tabs.create({ url: 'chrome://extensions/configureCommands' });
+  },
+
+  getBrowserActionShortcut: () => {
+    return new Promise(
+      resolve => {
+        chrome.commands.getAll(commands => {
+          const command = commands.find(command => {
+            return command['name'] === '_execute_browser_action'
+              && command['shortcut'];
+          });
+
+          resolve(
+            command
+              ? command['shortcut']
+              : null
+          )
+        });
+      },
+    );
   },
 
   saveOptions: options => {

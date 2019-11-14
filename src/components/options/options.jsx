@@ -7,21 +7,41 @@ import { OptionGroup } from '../options-group/option-group';
 
 export class Options extends React.Component {
 
+  browserActionShortcutIntervalId = null;
+
   state = {
-    options: {}
+    options: {},
+    browserActionShortcut: null,
   };
 
   constructor(props) {
     super(props);
 
-    props.browserProvider.getOptions({
-      showTabsFrom: 'all',
-      displayDensity: 'comfortable',
-      width: 350,
-      height: 400,
-    }).then(
-      options => this.setState({ options })
+    props.browserProvider
+      .getOptions({
+        showTabsFrom: 'all',
+        displayDensity: 'comfortable',
+        width: 350,
+        height: 400,
+      })
+      .then(options => this.setState({ options }));
+  }
+
+  componentDidMount() {
+    const checkBrowserActionShortcut = () => this.props.browserProvider
+      .getBrowserActionShortcut()
+      .then(browserActionShortcut => this.setState({ browserActionShortcut }));
+
+    checkBrowserActionShortcut();
+
+    this.browserActionShortcutIntervalId = setInterval(
+      checkBrowserActionShortcut,
+      1000,
     );
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.browserActionShortcutIntervalId)
   }
 
   handleOptionUpdated(option, value) {
@@ -37,27 +57,40 @@ export class Options extends React.Component {
     });
   }
 
+  handleConfigureBrowserActionShortcutClicked() {
+    this.props.browserProvider.openConfigureBrowserActionShortcut();
+  }
+
   render() {
     return (
       <div className={ 'flex' }>
         <div className={ 'flex-1' }>
           <h1>Quick Tab</h1>
+          <h2>Shortcut</h2>
+          { this.state.browserActionShortcut
+            ? <p>Open Quick Tab using <strong>{ this.state.browserActionShortcut }</strong>.</p>
+            : <p>No shortcut configured to open Quick Tab.</p>
+          }
+          <a onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>Configure</a>
           <OptionGroup title={ 'Show Tabs From' }
                        options={ { current: 'The current window', all: 'All windows' } }
                        value={ this.state.options.showTabsFrom }
-                       valueUpdated={ value => this.handleOptionUpdated('showTabsFrom', value) }/>
+                       valueUpdated={ value => this.handleOptionUpdated('showTabsFrom', value) } />
           <OptionGroup title={ 'Display Density' }
                        options={ { default: 'Default', comfortable: 'Comfortable', compact: 'Compact' } }
                        value={ this.state.options.displayDensity }
-                       valueUpdated={ value => this.handleOptionUpdated('displayDensity', value) }/>
+                       valueUpdated={ value => this.handleOptionUpdated('displayDensity', value) } />
           <OptionGroup title={ 'Width' }
                        options={ { 250: 'Small', 350: 'Medium', 450: 'Large', 600: 'Gigantic' } }
                        value={ this.state.options.width }
-                       valueUpdated={ value => this.handleOptionUpdated('width', value) }/>
+                       valueUpdated={ value => this.handleOptionUpdated('width', value) } />
           <OptionGroup title={ 'Height' }
                        options={ { 300: 'Small', 400: 'Medium', 600: 'Large', 800: 'Gigantic' } }
                        value={ this.state.options.height }
-                       valueUpdated={ value => this.handleOptionUpdated('height', value) }/>
+                       valueUpdated={ value => this.handleOptionUpdated('height', value) } />
+          <h2>About</h2>
+          <p>Request features using the ??? page</p>
+          <p>Translations</p>
         </div>
         <div className={ 'flex-1' }>
           <TabList browserProvider={ embeddedInOptions } />
