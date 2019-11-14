@@ -18,19 +18,19 @@ export default {
     chrome.tabs.remove(tab.id);
   },
 
-  savePreferences: preferences => {
+  saveOptions: options => {
     return new Promise(
       resolve => chrome.storage.sync.set(
-        preferences,
+        options,
         () => resolve(),
       ),
     );
   },
 
-  getPreferences: preferences => {
+  getOptions: options => {
     return new Promise(
       resolve => chrome.storage.sync.get(
-        preferences,
+        options,
         items => resolve(items),
       ),
     );

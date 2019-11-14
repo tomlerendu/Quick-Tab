@@ -12,8 +12,8 @@ export default {
 
   closeTab: tab => {},
 
-  savePreferences: preferences => {},
+  saveOptions: options => {},
 
-  getPreferences: preferences => {},
+  getOptions: options => {},
 
 }
