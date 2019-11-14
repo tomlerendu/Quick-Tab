@@ -521,6 +521,7 @@ module.exports = function(webpackEnv) {
           {},
           {
             inject: true,
+            filename: './index.html',
             template: paths.appHtml,
           },
           isEnvProduction
@@ -538,6 +539,33 @@ module.exports = function(webpackEnv) {
                   minifyURLs: true,
                 },
               }
+            : undefined
+        )
+      ),
+      // Generates an `index.html` file with the <script> injected.
+      new HtmlWebpackPlugin(
+        Object.assign(
+          {},
+          {
+            inject: true,
+            filename: './options.html',
+            template: paths.appOptionsHtml,
+          },
+          isEnvProduction
+            ? {
+              minify: {
+                removeComments: true,
+                collapseWhitespace: true,
+                removeRedundantAttributes: true,
+                useShortDoctype: true,
+                removeEmptyAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                keepClosingSlash: true,
+                minifyJS: true,
+                minifyCSS: true,
+                minifyURLs: true,
+              },
+            }
             : undefined
         )
       ),
