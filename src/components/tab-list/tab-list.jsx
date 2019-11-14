@@ -79,7 +79,7 @@ export class TabList extends React.Component {
         .replace(/  +/g, ' ')
         .split(' ')
         .join('.*?')
-        .replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
       const searchTermRegex = new RegExp(`(${ regexSearchTerm })`, 'gi');
 

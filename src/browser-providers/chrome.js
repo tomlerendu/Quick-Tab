@@ -2,7 +2,7 @@ export default {
 
   getTabs: (onlyCurrentWindow = false) => {
     return new Promise(
-      (resolve) => chrome.tabs.query(
+      resolve => chrome.tabs.query(
         { currentWindow: onlyCurrentWindow ? true : undefined },
         tabs => resolve(tabs)
       ),
@@ -16,6 +16,24 @@ export default {
 
   closeTab: tab => {
     chrome.tabs.remove(tab.id);
+  },
+
+  savePreferences: preferences => {
+    return new Promise(
+      resolve => chrome.storage.sync.set(
+        preferences,
+        () => resolve(),
+      ),
+    );
+  },
+
+  getPreferences: preferences => {
+    return new Promise(
+      resolve => chrome.storage.sync.get(
+        preferences,
+        items => resolve(items),
+      ),
+    );
   },
 
 }
