@@ -73,7 +73,7 @@ export class Options extends React.Component {
                 : <span className={ 'pr-2' }>No shortcut configured to open Quick Tab</span>
               }
               —
-              <a className={ 'text-blue-700 pl-2 cursor-pointer hover:underline' } onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>
+              <a className={ 'text-blue-700 ml-2 cursor-pointer hover:underline' } onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>
                 Configure
               </a>
             </p>

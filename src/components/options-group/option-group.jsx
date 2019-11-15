@@ -19,19 +19,17 @@ export class OptionGroup extends React.Component {
 
   renderOptions() {
     return Object.keys(this.props.options).map(value => {
-      return <div className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2' }
-                  key={ `option-${this.props.title}-${ value }` }>
-        <input type="radio"
-               id={ `option-${this.props.title}-${ value }` }
-               name={ `option-${this.props.title}`}
-               value={ value }
-               checked={ String(this.props.value) === String(value) }
-               onChange={ event => this.handleOptionChanged(event) }
-               className={ 'px-4 py-2 inline-block cursor-pointer' }/>
-        <label className={ 'px-4 py-2 inline-block cursor-pointer' } htmlFor={ `option-${this.props.title}-${ value }` }>
+      return <label className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2 px-4 py-2 cursor-pointer' }
+                    htmlFor={ `option-${this.props.title}-${ value }` }>
+          <input type="radio"
+                 id={ `option-${this.props.title}-${ value }` }
+                 name={ `option-${this.props.title}`}
+                 value={ value }
+                 checked={ String(this.props.value) === String(value) }
+                 onChange={ event => this.handleOptionChanged(event) }
+                 className={ 'mr-2 cursor-pointer' }/>
           { this.props.options[value] }
         </label>
-      </div>
     });
   }
 
