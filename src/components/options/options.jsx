@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { TabList } from '../tab-list/tab-list';
 import embeddedInOptions from '../../browser-providers/embedded-in-options';
 import { OptionGroup } from '../options-group/option-group';
+import * as options from '../../providers/options';
 
 export class Options extends React.Component {
 
@@ -18,12 +19,7 @@ export class Options extends React.Component {
     super(props);
 
     props.browserProvider
-      .getOptions({
-        showTabsFrom: 'all',
-        displayDensity: 'comfortable',
-        width: 350,
-        height: 400,
-      })
+      .getOptions(options.defaults)
       .then(options => this.setState({ options }));
   }
 
@@ -73,25 +69,26 @@ export class Options extends React.Component {
                 : <span className={ 'pr-2' }>No shortcut configured to open Quick Tab</span>
               }
               —
-              <a className={ 'text-blue-700 ml-2 cursor-pointer hover:underline' } onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>
+              <a className={ 'text-blue-700 ml-2 cursor-pointer hover:underline' }
+                 onClick={ () => this.handleConfigureBrowserActionShortcutClicked() }>
                 Configure
               </a>
             </p>
           </div>
           <OptionGroup title={ 'Show Tabs From' }
-                       options={ { current: 'The current window', all: 'All windows' } }
+                       options={ options.showTabsFrom }
                        value={ this.state.options.showTabsFrom }
                        valueUpdated={ value => this.handleOptionUpdated('showTabsFrom', value) } />
           <OptionGroup title={ 'Display Density' }
-                       options={ { default: 'Default', comfortable: 'Comfortable', compact: 'Compact' } }
+                       options={ options.displayDensity }
                        value={ this.state.options.displayDensity }
                        valueUpdated={ value => this.handleOptionUpdated('displayDensity', value) } />
           <OptionGroup title={ 'Width' }
-                       options={ { 250: 'Small', 350: 'Medium', 450: 'Large', 600: 'Gigantic' } }
+                       options={ options.width }
                        value={ this.state.options.width }
                        valueUpdated={ value => this.handleOptionUpdated('width', value) } />
           <OptionGroup title={ 'Height' }
-                       options={ { 300: 'Small', 400: 'Medium', 600: 'Large', 800: 'Gigantic' } }
+                       options={ options.height }
                        value={ this.state.options.height }
                        valueUpdated={ value => this.handleOptionUpdated('height', value) } />
           <div className={ 'py-2' }>

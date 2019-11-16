@@ -1,3 +1,5 @@
+import chrome from './chrome';
+
 export default {
 
   getTabs: (onlyCurrentWindow = false) => {
@@ -29,6 +31,6 @@ export default {
 
   saveOptions: options => {},
 
-  getOptions: options => {},
+  getOptions: chrome.getOptions,
 
 }

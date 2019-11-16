@@ -1,14 +1,31 @@
 import React from 'react';
 import './tab.scss';
 import PropTypes from 'prop-types';
+import * as options from '../../providers/options';
 
 export class Tab extends React.Component {
 
+  yPadding() {
+    return {
+      default: 4,
+      comfortable: 2,
+      compact: 1,
+    }[this.props.displayDensity];
+  }
+
+  textSize() {
+    return {
+      default: 'base',
+      comfortable: 'base',
+      compact: 'sm',
+    }[this.props.displayDensity];
+  }
+
   render() {
     return (
-      <div className={ `flex p-4 cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
+      <div className={ `flex items-center px-4 py-${ this.yPadding() } cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
         { this.renderFavIcon() }
-        <div className={ 'text-gray-900 tab-title' }>{ this.props.tab.title }</div>
+        <div className={ `text-gray-900 text-${ this.textSize() } tab-title` }>{ this.props.tab.title }</div>
       </div>
     );
   }
@@ -36,4 +53,5 @@ export class Tab extends React.Component {
 Tab.propTypes = {
   tab: PropTypes.object,
   isSelected: PropTypes.bool,
+  displayDensity: PropTypes.oneOf(Object.keys(options.displayDensity)),
 };

@@ -3,6 +3,7 @@ import './tab-list.scss';
 import PropTypes from 'prop-types';
 import { Tab } from '../tab/tab';
 import { Search } from '../search/search';
+import * as options from "../../providers/options";
 
 export class TabList extends React.Component {
 
@@ -16,13 +17,17 @@ export class TabList extends React.Component {
   constructor(props) {
     super(props);
 
-    props.browserProvider
-      .getTabs()
-      .then(tabs => this.setState({
+    Promise.all([
+      props.browserProvider.getTabs(),
+      props.browserProvider.getOptions(options.defaults),
+    ]).then( ([tabs, options]) => {
+      this.setState({
         tabs,
+        options,
         filteredTabs: [...tabs],
         isReady: true,
-      }));
+      });
+    });
   }
 
   mouseEnteredTab(tab) {
@@ -133,7 +138,8 @@ export class TabList extends React.Component {
                   onContextMenu={ event => this.handleTabContextMenuClick(event, tab) }
                   onMouseEnter={ () => this.mouseEnteredTab(tab) }>
         <Tab tab={ tab }
-             isSelected={ this.state.currentlySelectedTab === tab } />
+             isSelected={ this.state.currentlySelectedTab === tab }
+             displayDensity={ this.state.options.displayDensity } />
       </div>
     });
   }
