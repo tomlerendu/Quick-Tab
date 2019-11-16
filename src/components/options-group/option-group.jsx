@@ -22,7 +22,7 @@ export class OptionGroup extends React.Component {
       return <label className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2 px-4 py-2 cursor-pointer' }
                     htmlFor={ `option-${this.props.title}-${ value }` }
                     key={ `option-${this.props.title}-${ value }` }>
-          <input type="radio"
+          <input type={ 'radio' }
                  id={ `option-${this.props.title}-${ value }` }
                  name={ `option-${this.props.title}`}
                  value={ value }

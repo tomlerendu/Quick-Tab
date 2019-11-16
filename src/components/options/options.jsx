@@ -1,10 +1,11 @@
 import React from 'react';
 import './options.scss';
 import PropTypes from 'prop-types';
-import { TabList } from '../tab-list/tab-list';
-import embeddedInOptions from '../../browser-providers/embedded-in-options';
+import embeddedInOptionsProvider from '../../browser-providers/embedded-in-options';
+import chromeProvider from '../../browser-providers/chrome';
 import { OptionGroup } from '../options-group/option-group';
 import * as options from '../../providers/options';
+import { OptionsTabContainer } from '../options-tab-container/options-tab-container';
 
 export class Options extends React.Component {
 
@@ -98,7 +99,9 @@ export class Options extends React.Component {
           </div>
         </div>
         <div className={ 'w-2/5 border border-gray-400' }>
-          <TabList browserProvider={ embeddedInOptions } />
+          <OptionsTabContainer browserProvider={ chromeProvider }
+                               optionsProvider={ embeddedInOptionsProvider }
+                               options={ this.state.options }/>
         </div>
       </div>
     );

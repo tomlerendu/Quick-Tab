@@ -3,32 +3,13 @@ import './tab-list.scss';
 import PropTypes from 'prop-types';
 import { Tab } from '../tab/tab';
 import { Search } from '../search/search';
-import * as options from "../../providers/options";
 
 export class TabList extends React.Component {
 
   state = {
-    isReady: false,
-    tabs: [],
-    filteredTabs: [],
+    filteredTabs: [...this.props.tabs],
     currentlySelectedTab: null,
   };
-
-  constructor(props) {
-    super(props);
-
-    Promise.all([
-      props.browserProvider.getTabs(),
-      props.browserProvider.getOptions(options.defaults),
-    ]).then( ([tabs, options]) => {
-      this.setState({
-        tabs,
-        options,
-        filteredTabs: [...tabs],
-        isReady: true,
-      });
-    });
-  }
 
   mouseEnteredTab(tab) {
     this.setState({
@@ -55,25 +36,25 @@ export class TabList extends React.Component {
   }
 
   handleArrowKeyPress(key) {
-    let index = this.state.tabs.indexOf(this.state.currentlySelectedTab);
+    let index = this.props.tabs.indexOf(this.state.currentlySelectedTab);
 
     if (['ArrowUp'].includes(key)) {
       index = Math.max(0, index - 1);
     }
 
     if (['ArrowDown'].includes(key)) {
-      index = Math.min(this.state.tabs.length - 1, index + 1);
+      index = Math.min(this.props.tabs.length - 1, index + 1);
     }
 
     this.setState({
-      currentlySelectedTab: this.state.tabs[index],
+      currentlySelectedTab: this.props.tabs[index],
     });
   }
 
   handleEnterKeyPress() {
     this.state.currentlySelectedTab
-      ? this.props.browserProvider.switchToTab(this.state.currentlySelectedTab)
-      : this.setState({ currentlySelectedTab: this.state.tabs[0] });
+      ? this.props.switchToTab(this.state.currentlySelectedTab)
+      : this.setState({ currentlySelectedTab: this.props.tabs[0] });
   }
 
   handleSearchTermUpdate(searchTerm) {
@@ -88,9 +69,9 @@ export class TabList extends React.Component {
 
       const searchTermRegex = new RegExp(`(${ regexSearchTerm })`, 'gi');
 
-      filteredTabs = this.state.tabs.filter(tab => tab.title.match(searchTermRegex));
+      filteredTabs = this.props.tabs.filter(tab => tab.title.match(searchTermRegex));
     } else {
-      filteredTabs = [...this.state.tabs];
+      filteredTabs = [...this.props.tabs];
     }
 
     this.setState({
@@ -100,25 +81,21 @@ export class TabList extends React.Component {
   }
 
   handleTabClick(tab) {
-    this.props.browserProvider.switchToTab(tab);
+    this.props.switchToTab(tab);
   }
 
   handleTabContextMenuClick(event, tab) {
     event.preventDefault();
 
-    this.props.browserProvider.closeTab(tab);
+    this.props.closeTab(tab);
 
     this.setState({
-      tabs: this.state.tabs.filter(t => t !== tab),
-      filteredTabs: this.state.tabs.filter(t => t !== tab),
+      tabs: this.props.tabs.filter(t => t !== tab),
+      filteredTabs: this.props.tabs.filter(t => t !== tab),
     });
   }
 
   render() {
-    if (!this.state.isReady) {
-      return null;
-    }
-
     return (
       <div>
         <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) } />
@@ -139,7 +116,7 @@ export class TabList extends React.Component {
                   onMouseEnter={ () => this.mouseEnteredTab(tab) }>
         <Tab tab={ tab }
              isSelected={ this.state.currentlySelectedTab === tab }
-             displayDensity={ this.state.options.displayDensity } />
+             displayDensity={ this.props.options.displayDensity } />
       </div>
     });
   }
@@ -156,5 +133,8 @@ export class TabList extends React.Component {
 }
 
 TabList.propTypes = {
-  browserProvider: PropTypes.object,
+  tabs: PropTypes.array,
+  options: PropTypes.array,
+  switchToTab: PropTypes.func,
+  closeTab: PropTypes.func,
 };
