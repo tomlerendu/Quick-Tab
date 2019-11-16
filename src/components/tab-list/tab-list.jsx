@@ -25,6 +25,15 @@ export class TabList extends React.Component {
     document.removeEventListener('keydown', this.handleKeyPress.bind(this));
   }
 
+  width() {
+    return {
+      small: 350,
+      medium: 450,
+      large: 550,
+      gigantic: 700,
+    }[this.props.options.width] + 'px';
+  }
+
   handleKeyPress(event) {
     if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       this.handleArrowKeyPress(event.key);
@@ -76,7 +85,9 @@ export class TabList extends React.Component {
 
     this.setState({
       filteredTabs,
-      currentlySelectedTab: filteredTabs.length && searchTerm.length ? filteredTabs[0] : null,
+      currentlySelectedTab: filteredTabs.length && searchTerm.length
+        ? filteredTabs[0]
+        : null,
     });
   }
 
@@ -97,7 +108,7 @@ export class TabList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={ { width: this.width() } }>
         <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) } />
         { this.renderTabs() }
       </div>
@@ -134,7 +145,7 @@ export class TabList extends React.Component {
 
 TabList.propTypes = {
   tabs: PropTypes.array,
-  options: PropTypes.array,
+  options: PropTypes.object,
   switchToTab: PropTypes.func,
   closeTab: PropTypes.func,
 };

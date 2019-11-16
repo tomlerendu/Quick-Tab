@@ -58,15 +58,19 @@ export class Options extends React.Component {
     this.props.browserProvider.openConfigureBrowserActionShortcut();
   }
 
+  handleUrlClicked(url) {
+    this.props.browserProvider.createTab(url);
+  }
+
   render() {
     return (
-      <div className={ 'flex m-5 text-gray-800' } style={ {width: '800px'}}>
+      <div className={ 'flex m-5 text-gray-800 container' }>
         <div className={ 'w-3/5' }>
-          <div className={ 'py-2' }>
+          <div className={ 'mb-4' }>
             <h2 className={ 'text-lg my-2' }>Shortcut</h2>
             <p>
               { this.state.browserActionShortcut
-                ? <span className={ 'pr-2 '}>Open Quick Tab using <strong>{ this.state.browserActionShortcut }</strong></span>
+                ? <span className={ 'pr-2' }>Open Quick Tab using <strong>{ this.state.browserActionShortcut }</strong></span>
                 : <span className={ 'pr-2' }>No shortcut configured to open Quick Tab</span>
               }
               —
@@ -88,20 +92,32 @@ export class Options extends React.Component {
                        options={ options.width }
                        value={ this.state.options.width }
                        valueUpdated={ value => this.handleOptionUpdated('width', value) } />
-          <OptionGroup title={ 'Height' }
-                       options={ options.height }
-                       value={ this.state.options.height }
-                       valueUpdated={ value => this.handleOptionUpdated('height', value) } />
-          <div className={ 'py-2' }>
+          <div className={ 'mb-4' }>
             <h2 className={ 'text-lg my-2' }>About</h2>
-            <p>Request features using the ??? page</p>
-            <p>Translations</p>
+            <p>
+              <span className={ 'pr-2' }>Feature requests and bugs</span>
+              —
+              <a className={ 'text-blue-700 ml-2 cursor-pointer hover:underline' }
+                 onClick={ () => this.handleUrlClicked('https://github.com/tomlerendu/Quick-Tab/issues/new') }>
+                Create Issue
+              </a>
+            </p>
+            <p>
+              <span className={ 'pr-2' }>Translations</span>
+              —
+              <a className={ 'text-blue-700 ml-2 cursor-pointer hover:underline' }
+                 onClick={ () => this.handleUrlClicked('https://docs.google.com/forms/d/e/1FAIpQLSeNHnP0xeGR-pRixEk5K-8YhNDlsyDITXBhgOiE19cvt5_OAQ/viewform') }>
+                Help Translate
+              </a>
+            </p>
           </div>
         </div>
-        <div className={ 'w-2/5 border border-gray-400' }>
-          <OptionsTabContainer browserProvider={ chromeProvider }
-                               optionsProvider={ embeddedInOptionsProvider }
-                               options={ this.state.options }/>
+        <div className={ 'flex w-2/5' }>
+          <div className={ 'border border-gray-400 align-baseline' }>
+            <OptionsTabContainer browserProvider={ chromeProvider }
+                                 optionsProvider={ embeddedInOptionsProvider }
+                                 options={ this.state.options } />
+          </div>
         </div>
       </div>
     );

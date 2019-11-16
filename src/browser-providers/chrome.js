@@ -18,6 +18,10 @@ export default {
     chrome.tabs.remove(tab.id);
   },
 
+  createTab: url => {
+    chrome.tabs.create({ url });
+  },
+
   openConfigureBrowserActionShortcut: () => {
     chrome.tabs.create({ url: 'chrome://extensions/configureCommands' });
   },

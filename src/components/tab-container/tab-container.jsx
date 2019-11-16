@@ -14,16 +14,17 @@ export class TabContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    Promise.all([
-      props.browserProvider.getTabs(),
-      props.browserProvider.getOptions(options.defaults),
-    ]).then( ([tabs, options]) => {
-      this.setState({
-        tabs,
-        options,
-        isReady: true,
+    props.browserProvider.getOptions(options.defaults)
+      .then(options => {
+        props.browserProvider.getTabs(options.showTabsFrom === 'current')
+          .then(tabs => {
+            this.setState({
+              tabs,
+              options,
+              isReady: true,
+            });
+          });
       });
-    });
   }
 
   render() {

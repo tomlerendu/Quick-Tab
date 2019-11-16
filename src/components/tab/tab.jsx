@@ -7,25 +7,27 @@ export class Tab extends React.Component {
 
   yPadding() {
     return {
-      default: 4,
-      comfortable: 2,
-      compact: 1,
+      default: 'py-3',
+      comfortable: 'py-2',
+      compact: 'py-1',
+      squashed: '',
     }[this.props.displayDensity];
   }
 
   textSize() {
     return {
-      default: 'base',
-      comfortable: 'base',
-      compact: 'sm',
+      default: 'text-base',
+      comfortable: 'text-base',
+      compact: 'text-sm',
+      squashed: 'text-sm',
     }[this.props.displayDensity];
   }
 
   render() {
     return (
-      <div className={ `flex items-center px-4 py-${ this.yPadding() } cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
+      <div className={ `flex items-center px-4 ${ this.yPadding() } cursor-pointer ${ this.props.isSelected ? 'bg-blue-100' : '' }` }>
         { this.renderFavIcon() }
-        <div className={ `text-gray-900 text-${ this.textSize() } tab-title` }>{ this.props.tab.title }</div>
+        <div className={ `text-gray-900 ${ this.textSize() } tab-title` }>{ this.props.tab.title }</div>
       </div>
     );
   }

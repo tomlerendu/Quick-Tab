@@ -10,7 +10,7 @@ export class OptionGroup extends React.Component {
 
   render() {
     return (
-      <div className={ 'py-2' }>
+      <div className={ 'mb-4' }>
         <h2 className={ 'text-lg my-2' }>{ this.props.title }</h2>
         { this.renderOptions() }
       </div>

@@ -12,14 +12,13 @@ export class OptionsTabContainer extends React.Component {
   constructor(props) {
     super(props);
 
-    Promise.all([
-      props.optionsProvider.getTabs(),
-    ]).then( ([tabs]) => {
-      this.setState({
-        tabs,
-        isReady: true,
+    props.optionsProvider.getTabs()
+      .then(tabs => {
+        this.setState({
+          tabs,
+          isReady: true,
+        });
       });
-    });
   }
 
   render() {
