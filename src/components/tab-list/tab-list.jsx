@@ -21,7 +21,7 @@ export class TabList extends React.Component {
       .then(tabs => this.setState({
         tabs,
         filteredTabs: [...tabs],
-        isReady: true
+        isReady: true,
       }));
   }
 
@@ -103,14 +103,9 @@ export class TabList extends React.Component {
 
     this.props.browserProvider.closeTab(tab);
 
-    console.log(this.state.tabs.indexOf(tab));
     this.setState({
-      tabs: [
-        ...this.state.tabs.splice(
-          this.state.tabs.indexOf(tab),
-          1
-        ),
-      ],
+      tabs: this.state.tabs.filter(t => t !== tab),
+      filteredTabs: this.state.tabs.filter(t => t !== tab),
     });
   }
 
