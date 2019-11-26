@@ -19,7 +19,7 @@ export class OptionGroup extends React.Component {
 
   renderOptions() {
     return Object.keys(this.props.options).map(value => {
-      return <label className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2 px-4 py-2 cursor-pointer' }
+      return <label className={ 'bg-gray-100 inline-block border border-gray-400 hover:border-gray-500 mr-2 px-4 py-2 rounded cursor-pointer' }
                     htmlFor={ `option-${this.props.title}-${ value }` }
                     key={ `option-${this.props.title}-${ value }` }>
           <input type={ 'radio' }
