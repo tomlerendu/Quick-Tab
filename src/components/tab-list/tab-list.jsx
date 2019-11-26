@@ -4,16 +4,23 @@ import PropTypes from 'prop-types';
 import { Tab } from '../tab/tab';
 import { Search } from '../search/search';
 
+const emptyTabScreenActions = {
+  newTab: 'newTab',
+  search: 'search',
+};
+
 export class TabList extends React.Component {
 
   state = {
+    searchTerm: '',
     filteredTabs: [...this.props.tabs],
-    currentlySelectedTab: null,
+    selectedTab: null,
+    selectedEmptyTabScreenAction: emptyTabScreenActions.newTab,
   };
 
   mouseEnteredTab(tab) {
     this.setState({
-      currentlySelectedTab: tab,
+      selectedTab: tab,
     });
   }
 
@@ -45,25 +52,47 @@ export class TabList extends React.Component {
   }
 
   handleArrowKeyPress(key) {
-    let index = this.props.tabs.indexOf(this.state.currentlySelectedTab);
+    this.state.filteredTabs.length
+      ? this.handleArrowKeyPressTabs(key)
+      : this.handleArrowKeyPressEmpty(key);
+  }
 
-    if (['ArrowUp'].includes(key)) {
+  handleArrowKeyPressTabs(key) {
+    let index = this.props.tabs.indexOf(this.state.selectedTab);
+
+    if (key === 'ArrowUp') {
       index = Math.max(0, index - 1);
     }
 
-    if (['ArrowDown'].includes(key)) {
+    if (key === 'ArrowDown') {
       index = Math.min(this.props.tabs.length - 1, index + 1);
     }
 
     this.setState({
-      currentlySelectedTab: this.props.tabs[index],
+      selectedTab: this.props.tabs[index],
+    });
+  }
+
+  handleArrowKeyPressEmpty(key) {
+    let action = this.state.selectedEmptyTabScreenAction;
+
+    if (key === 'ArrowUp' && this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.search) {
+      action = emptyTabScreenActions.newTab;
+    }
+
+    if (key === 'ArrowDown' && this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.newTab) {
+      action = emptyTabScreenActions.search;
+    }
+
+    this.setState({
+      selectedEmptyTabScreenAction: action,
     });
   }
 
   handleEnterKeyPress() {
-    this.state.currentlySelectedTab
-      ? this.props.switchToTab(this.state.currentlySelectedTab)
-      : this.setState({ currentlySelectedTab: this.props.tabs[0] });
+    this.state.filteredTabs.length
+      ? this.props.switchToTab(this.state.selectedTab)
+      : this.performSelectedEmptyTabAction();
   }
 
   handleSearchTermUpdate(searchTerm) {
@@ -84,10 +113,12 @@ export class TabList extends React.Component {
     }
 
     this.setState({
+      searchTerm,
       filteredTabs,
-      currentlySelectedTab: filteredTabs.length && searchTerm.length
+      selectedTab: filteredTabs.length && searchTerm.length
         ? filteredTabs[0]
         : null,
+      selectedEmptyTabScreenAction: emptyTabScreenActions.newTab,
     });
   }
 
@@ -106,6 +137,22 @@ export class TabList extends React.Component {
     });
   }
 
+  performSelectedEmptyTabAction() {
+    if (this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.newTab) {
+      this.props.openNewTabPage();
+    }
+
+    if (this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.search) {
+      this.props.createTab(`https://google.com/search?q=${ encodeURIComponent(this.state.searchTerm) }`);
+    }
+  }
+
+  setSelectedEmptyTabAction(action) {
+    this.setState({
+      selectedEmptyTabScreenAction: action,
+    });
+  }
+
   render() {
     return (
       <div style={ { width: this.width() } }>
@@ -117,7 +164,7 @@ export class TabList extends React.Component {
 
   renderTabs() {
     if (this.state.filteredTabs.length === 0) {
-      return this.renderNoTabsFound();
+      return this.renderEmptyTabScreen();
     }
 
     return this.state.filteredTabs.map(tab => {
@@ -126,18 +173,41 @@ export class TabList extends React.Component {
                   onContextMenu={ event => this.handleTabContextMenuClick(event, tab) }
                   onMouseEnter={ () => this.mouseEnteredTab(tab) }>
         <Tab tab={ tab }
-             isSelected={ this.state.currentlySelectedTab === tab }
+             isSelected={ this.state.selectedTab === tab }
              displayDensity={ this.props.options.displayDensity } />
       </div>
     });
   }
 
-  renderNoTabsFound() {
-    return <div className={ 'py-12 text-center text-gray-600' }>
-      <p className={ 'text-6xl' }>
-        <span role={ 'img' } aria-label={ 'Shocked face emoji' }>😱</span>
+  renderEmptyTabScreen() {
+    return <div className={ 'py-8 text-center' }>
+      <p className={ 'text-xl py-4 text-gray-500' }>
+        <span role={ 'img' } aria-label={ 'Shocked face emoji' }>😱</span> Nothing found
       </p>
-      <p className={ 'text-xl' }>No tabs found</p>
+      <div className={ 'flex justify-center text-gray-700' }>
+        <ul className={ 'w-2/3 border border-gray rounded' }>
+          <li
+            onMouseEnter={ () => this.setSelectedEmptyTabAction(emptyTabScreenActions.newTab) }
+            onClick={ () => this.performSelectedEmptyTabAction() }
+            className={ `
+              cursor-pointer p-2 text-base
+              ${ this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.newTab ? 'bg-blue-100' : '' }
+            ` }
+          >
+            Open a new tab
+          </li>
+          <li
+            onMouseEnter={ () => this.setSelectedEmptyTabAction(emptyTabScreenActions.search) }
+            onClick={ () => this.performSelectedEmptyTabAction() }
+            className={ `
+              cursor-pointer p-2 text-base
+              ${ this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.search ? 'bg-blue-100' : '' }
+            ` }
+          >
+            Search on Google
+          </li>
+        </ul>
+      </div>
     </div>
   }
 
@@ -148,4 +218,6 @@ TabList.propTypes = {
   options: PropTypes.object,
   switchToTab: PropTypes.func,
   closeTab: PropTypes.func,
+  openNewTabPage: PropTypes.func,
+  createTab: PropTypes.func,
 };

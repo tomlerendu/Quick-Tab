@@ -22,6 +22,10 @@ export default {
     chrome.tabs.create({ url });
   },
 
+  openNewTabPage: () => {
+    chrome.tabs.create({ url: 'chrome://newtab' });
+  },
+
   openConfigureBrowserActionShortcut: () => {
     chrome.tabs.create({ url: 'chrome://extensions/configureCommands' });
   },

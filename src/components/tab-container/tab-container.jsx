@@ -36,6 +36,8 @@ export class TabContainer extends React.Component {
       <TabList tabs={ this.state.tabs }
                options={ this.state.options }
                switchToTab={ this.props.browserProvider.switchToTab }
+               openNewTabPage={ this.props.browserProvider.openNewTabPage }
+               createTab={ this.props.browserProvider.createTab }
                closeTab={ this.props.browserProvider.closeTab } />
     );
   }

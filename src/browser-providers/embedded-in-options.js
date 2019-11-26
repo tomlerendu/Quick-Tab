@@ -27,8 +27,6 @@ export default {
     );
   },
 
-  switchToTab: tab => {},
-
-  closeTab: tab => {},
+  doNothing: () => {},
 
 }
