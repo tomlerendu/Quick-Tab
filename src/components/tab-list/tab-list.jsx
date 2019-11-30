@@ -43,15 +43,6 @@ export class TabList extends React.Component {
     document.removeEventListener('keydown', event => this.handleKeyPress(event));
   }
 
-  width() {
-    return {
-      small: 350,
-      medium: 450,
-      large: 550,
-      gigantic: 700,
-    }[this.props.options.width] + 'px';
-  }
-
   handleKeyPress(event) {
     if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       this.handleArrowKeyPress(event.key);
@@ -175,7 +166,7 @@ export class TabList extends React.Component {
 
   render() {
     return (
-      <div style={ { width: this.width() } }>
+      <div className={ 'w-full' }>
         <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) } />
         { this.renderHelp() }
         { this.renderTabs() }

@@ -112,8 +112,8 @@ export class Options extends React.Component {
             </p>
           </div>
         </div>
-        <div className={ 'flex w-2/5' }>
-          <div className={ 'border border-gray-400 align-baseline' }>
+        <div className={ 'flex w-2/5 p-6' }>
+          <div className={ 'border border-gray-400 align-baseline w-full' }>
             <OptionsTabContainer browserProvider={ chromeProvider }
                                  optionsProvider={ embeddedInOptionsProvider }
                                  options={ this.state.options } />
