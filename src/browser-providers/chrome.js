@@ -30,7 +30,18 @@ export default {
     chrome.tabs.create({ url: 'chrome://extensions/configureCommands' });
   },
 
+  openOptionsPage: () => {
+    chrome.tabs.create({ url: 'chrome://extensions/?options=' + chrome.runtime.id });
+  },
+
   getBrowserActionShortcut: () => {
+    const formatShortcut = shortcut => {
+      return shortcut.replace('⌃', 'Ctrl+')
+        .replace('⌘', 'Cmd+')
+        .replace('⌥', 'Option+')
+        .replace('⇧', 'Shift+')
+    };
+
     return new Promise(
       resolve => {
         chrome.commands.getAll(commands => {
@@ -41,7 +52,7 @@ export default {
 
           resolve(
             command
-              ? command['shortcut']
+              ? formatShortcut(command['shortcut'])
               : null
           )
         });

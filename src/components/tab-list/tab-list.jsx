@@ -3,6 +3,7 @@ import './tab-list.scss';
 import PropTypes from 'prop-types';
 import { Tab } from '../tab/tab';
 import { Search } from '../search/search';
+import {Help} from "../help/help";
 
 const emptyTabScreenActions = {
   newTab: 'newTab',
@@ -15,6 +16,8 @@ export class TabList extends React.Component {
     searchTerm: '',
     filteredTabs: [...this.props.tabs],
     selectedTab: null,
+    browserActionShortcut: null,
+    helpDismissed: true,
     selectedEmptyTabScreenAction: emptyTabScreenActions.newTab,
   };
 
@@ -25,11 +28,19 @@ export class TabList extends React.Component {
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.handleKeyPress.bind(this));
+    document.addEventListener('keydown', event => this.handleKeyPress(event));
+
+    this.props.getBrowserActionShortcut().then(
+      browserActionShortcut => this.setState({ browserActionShortcut })
+    );
+
+    this.props
+      .getOptions({ helpDismissed: false })
+      .then(options => this.setState(options));
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.handleKeyPress.bind(this));
+    document.removeEventListener('keydown', event => this.handleKeyPress(event));
   }
 
   width() {
@@ -95,6 +106,10 @@ export class TabList extends React.Component {
       : this.performSelectedEmptyTabAction();
   }
 
+  handleOptionsClick() {
+    this.props.openOptionsPage();
+  }
+
   handleSearchTermUpdate(searchTerm) {
     let filteredTabs;
 
@@ -137,6 +152,11 @@ export class TabList extends React.Component {
     });
   }
 
+  handleHelpDismissed() {
+    this.props.saveOptions({ helpDismissed: true });
+    this.setState({ helpDismissed: true });
+  }
+
   performSelectedEmptyTabAction() {
     if (this.state.selectedEmptyTabScreenAction === emptyTabScreenActions.newTab) {
       this.props.openNewTabPage();
@@ -157,9 +177,20 @@ export class TabList extends React.Component {
     return (
       <div style={ { width: this.width() } }>
         <Search searchTermUpdated={ searchTerm => this.handleSearchTermUpdate(searchTerm) } />
+        { this.renderHelp() }
         { this.renderTabs() }
       </div>
     );
+  }
+
+  renderHelp() {
+    if (this.state.helpDismissed) {
+      return null;
+    }
+
+    return <Help browserActionShortcut={ this.state.browserActionShortcut }
+                 onDismiss={ () => this.handleHelpDismissed() }
+                 onOptionsClick={ () => this.handleOptionsClick() } />;
   }
 
   renderTabs() {
@@ -216,8 +247,12 @@ export class TabList extends React.Component {
 TabList.propTypes = {
   tabs: PropTypes.array,
   options: PropTypes.object,
+  getOptions: PropTypes.func,
+  saveOptions: PropTypes.func,
   switchToTab: PropTypes.func,
   closeTab: PropTypes.func,
   openNewTabPage: PropTypes.func,
+  openOptionsPage: PropTypes.func,
   createTab: PropTypes.func,
+  getBrowserActionShortcut: PropTypes.func,
 };

@@ -29,8 +29,12 @@ export class OptionsTabContainer extends React.Component {
     return (
       <TabList tabs={ this.state.tabs }
                options={ this.props.options }
+               saveOptions={ this.props.browserProvider.saveOptions }
+               getOptions={ this.props.browserProvider.getOptions }
+               getBrowserActionShortcut={ this.props.browserProvider.getBrowserActionShortcut }
                switchToTab={ this.props.optionsProvider.doNothing }
                openNewTabPage={ this.props.optionsProvider.doNothing }
+               openOptionsPage={ this.props.optionsProvider.doNothing }
                createTab={ this.props.optionsProvider.doNothing }
                closeTab={ this.props.optionsProvider.doNothing } />
     );
