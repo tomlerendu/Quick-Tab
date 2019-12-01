@@ -11,6 +11,9 @@ export class Help extends React.Component {
           { this.props.browserActionShortcut && <li className={ 'mb-1' }>
             Use { this.props.browserActionShortcut } to open this window quickly
           </li> }
+          { !this.props.browserActionShortcut && <li className={ 'mb-1' }>
+            You can configure a keyboard shortcut to open this window quickly in options
+          </li> }
           <li className={ 'mb-1' }>Use the up, down and enter keys to select and switch to a tab</li>
           <li className={ 'mb-1' }>Right click on a tab to close it</li>
         </ul>
