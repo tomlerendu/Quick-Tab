@@ -1,7 +1,7 @@
 export const defaults = {
   showTabsFrom: 'all',
   displayDensity: 'comfortable',
-  width: 450,
+  width: 'medium',
 };
 
 export const showTabsFrom = {
