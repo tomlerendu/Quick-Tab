@@ -60,9 +60,9 @@
     "workbox-webpack-plugin": "4.3.1"
   },
   "scripts": {
-    "build": "node scripts/build.js",
+    "build": "yarn build:style && node scripts/build.js",
     "test": "node scripts/test.js",
-    "watch": "yarn build:style && node scripts/watch.js",
+    "dev": "yarn build:style && node scripts/dev.js",
     "build:style":"tailwind build src/index.scss -o src/tailwind.css"
   },
   "browserslist": {
