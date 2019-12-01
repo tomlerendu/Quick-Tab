@@ -2,6 +2,7 @@
   "name": "quick-tab",
   "version": "5.0",
   "license": "MIT",
+  "author": "Tom Lerendu <tom@tomlerendu.uk>",
   "dependencies": {
     "@babel/core": "7.6.0",
     "@svgr/webpack": "4.3.2",
