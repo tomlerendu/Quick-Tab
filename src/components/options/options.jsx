@@ -80,11 +80,11 @@ export class Options extends React.Component {
               </a>
             </p>
           </div>
-          <OptionGroup title={ 'Show Tabs From' }
+          <OptionGroup title={ 'Show tabs from' }
                        options={ options.showTabsFrom }
                        value={ this.state.options.showTabsFrom }
                        valueUpdated={ value => this.handleOptionUpdated('showTabsFrom', value) } />
-          <OptionGroup title={ 'Display Density' }
+          <OptionGroup title={ 'Display density' }
                        options={ options.displayDensity }
                        value={ this.state.options.displayDensity }
                        valueUpdated={ value => this.handleOptionUpdated('displayDensity', value) } />
@@ -92,6 +92,10 @@ export class Options extends React.Component {
                        options={ options.width }
                        value={ this.state.options.width }
                        valueUpdated={ value => this.handleOptionUpdated('width', value) } />
+          <OptionGroup title={ 'Show tab count on browser action' }
+                       options={ options.browserActionTabCount }
+                       value={ this.state.options.browserActionTabCount }
+                       valueUpdated={ value => this.handleOptionUpdated('browserActionTabCount', value) } />
           <div className={ 'mb-4' }>
             <h2 className={ 'text-lg my-2' }>About</h2>
             <p>

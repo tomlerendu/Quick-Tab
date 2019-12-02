@@ -2,6 +2,7 @@ export const defaults = {
   showTabsFrom: 'all',
   displayDensity: 'comfortable',
   width: 'medium',
+  browserActionTabCount: 'dontShow',
 };
 
 export const showTabsFrom = {
@@ -21,4 +22,10 @@ export const width = {
   medium: 'Medium',
   large: 'Large',
   gigantic: 'Gigantic',
+};
+
+export const browserActionTabCount = {
+  dontShow: 'Dont show',
+  all: 'All windows',
+  current: 'The current window',
 };
