@@ -63,7 +63,7 @@
     "build": "yarn build:style && node scripts/build.js",
     "test": "node scripts/test.js",
     "dev": "yarn build:style && node scripts/dev.js",
-    "build:style":"tailwind build src/index.scss -o src/tailwind.css"
+    "build:style": "tailwind build src/index.scss -o src/tailwind.css"
   },
   "browserslist": {
     "production": [
