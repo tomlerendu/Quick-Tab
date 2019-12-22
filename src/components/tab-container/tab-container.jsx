@@ -29,7 +29,6 @@ export class TabContainer extends React.Component {
   }
 
   width() {
-    console.log(this.state.options.width);
     return {
       small: 350,
       medium: 450,

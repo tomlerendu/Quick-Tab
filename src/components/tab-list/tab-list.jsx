@@ -14,6 +14,7 @@ export class TabList extends React.Component {
 
   state = {
     searchTerm: '',
+    tabs: [...this.props.tabs],
     filteredTabs: [...this.props.tabs],
     selectedTab: null,
     browserActionShortcut: null,
@@ -60,18 +61,18 @@ export class TabList extends React.Component {
   }
 
   handleArrowKeyPressTabs(key) {
-    let index = this.props.tabs.indexOf(this.state.selectedTab);
+    let index = this.state.tabs.indexOf(this.state.selectedTab);
 
     if (key === 'ArrowUp') {
       index = Math.max(0, index - 1);
     }
 
     if (key === 'ArrowDown') {
-      index = Math.min(this.props.tabs.length - 1, index + 1);
+      index = Math.min(this.state.tabs.length - 1, index + 1);
     }
 
     this.setState({
-      selectedTab: this.props.tabs[index],
+      selectedTab: this.state.tabs[index],
     });
   }
 
@@ -107,15 +108,19 @@ export class TabList extends React.Component {
     if (searchTerm !== '') {
       const regexSearchTerm = searchTerm
         .replace(/  +/g, ' ')
-        .split(' ')
-        .join('.*?')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .trim()
         .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
 
       const searchTermRegex = new RegExp(`(${ regexSearchTerm })`, 'gi');
 
-      filteredTabs = this.props.tabs.filter(tab => tab.title.match(searchTermRegex));
+      filteredTabs = this.state.tabs.filter(
+        tab => tab.title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(searchTermRegex)
+          || tab.url.match(searchTermRegex)
+      );
     } else {
-      filteredTabs = [...this.props.tabs];
+      filteredTabs = [...this.state.tabs];
     }
 
     this.setState({
@@ -137,9 +142,16 @@ export class TabList extends React.Component {
 
     this.props.closeTab(tab);
 
+    const currentTabs = this.state.searchTerm.length
+      ? this.state.filteredTabs
+      : this.state.tabs;
+
+    const selectedTabIndex = currentTabs.indexOf(tab);
+
     this.setState({
-      tabs: this.props.tabs.filter(t => t !== tab),
-      filteredTabs: this.props.tabs.filter(t => t !== tab),
+      tabs: this.state.tabs.filter(t => t !== tab),
+      filteredTabs: this.state.filteredTabs.filter(t => t !== tab),
+      selectedTab: currentTabs[selectedTabIndex + 1] || null,
     });
   }
 
