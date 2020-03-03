@@ -61,18 +61,18 @@ export class TabList extends React.Component {
   }
 
   handleArrowKeyPressTabs(key) {
-    let index = this.state.tabs.indexOf(this.state.selectedTab);
+    let index = this.state.filteredTabs.indexOf(this.state.selectedTab);
 
     if (key === 'ArrowUp') {
       index = Math.max(0, index - 1);
     }
 
     if (key === 'ArrowDown') {
-      index = Math.min(this.state.tabs.length - 1, index + 1);
+      index = Math.min(this.state.filteredTabs.length - 1, index + 1);
     }
 
     this.setState({
-      selectedTab: this.state.tabs[index],
+      selectedTab: this.state.filteredTabs[index],
     });
   }
 

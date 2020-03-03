@@ -8,14 +8,23 @@ export class Search extends React.Component {
     this.props.searchTermUpdated(event.target.value);
   }
 
+  preventUpAndDownArrowPresses(event) {
+    if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   render() {
     return (
       <div className={ 'flex' }>
-        <input className={ 'flex-1 p-4 text-xl outline-none bg-gray-100 border-gray-200 border-b' }
-               type={ 'text' }
-               placeholder={ 'Quick Tab' }
-               autoFocus
-               onInput={ event => this.handleInput(event) }/>
+        <input
+          className={ 'flex-1 p-4 text-xl outline-none bg-gray-100 border-gray-200 border-b' }
+          type={ 'text' }
+          placeholder={ 'Quick Tab' }
+          autoFocus
+          onKeyDown={ event => this.preventUpAndDownArrowPresses(event) }
+          onInput={ event => this.handleInput(event) }
+        />
       </div>
     );
   }
