@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Tab from '../tab/tab';
 import Search from '../search/search';
 import Help from '../help/help';
+import fuzzysort from 'fuzzysort';
 
 const emptyTabScreenActions = {
   newTab: 'newTab',
@@ -103,25 +104,10 @@ export class TabList extends React.Component {
   }
 
   handleSearchTermUpdate(searchTerm) {
-    let filteredTabs;
-
-    if (searchTerm !== '') {
-      const regexSearchTerm = searchTerm
-        .replace(/  +/g, ' ')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim()
-        .replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-
-      const searchTermRegex = new RegExp(`(${ regexSearchTerm })`, 'gi');
-
-      filteredTabs = this.state.tabs.filter(
-        tab => tab.title.normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(searchTermRegex)
-          || tab.url.match(searchTermRegex)
-      );
-    } else {
-      filteredTabs = [...this.state.tabs];
-    }
+    const filteredTabs = searchTerm !== ''
+      ? fuzzysort.go(searchTerm, this.state.tabs, { key: 'title' })
+        .map(result => result.obj)
+      : [...this.state.tabs];
 
     this.setState({
       searchTerm,
