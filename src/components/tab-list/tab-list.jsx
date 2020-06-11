@@ -1,9 +1,9 @@
 import React from 'react';
 import './tab-list.scss';
 import PropTypes from 'prop-types';
-import { Tab } from '../tab/tab';
-import { Search } from '../search/search';
-import {Help} from "../help/help";
+import Tab from '../tab/tab';
+import Search from '../search/search';
+import Help from '../help/help';
 
 const emptyTabScreenActions = {
   newTab: 'newTab',
