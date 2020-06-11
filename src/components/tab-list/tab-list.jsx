@@ -105,7 +105,8 @@ export class TabList extends React.Component {
 
   handleSearchTermUpdate(searchTerm) {
     const filteredTabs = searchTerm !== ''
-      ? fuzzysort.go(searchTerm, this.state.tabs, { key: 'title' })
+      ? fuzzysort
+        .go(searchTerm, this.state.tabs, { key: 'title', allowTypo: true, threshold: -Infinity })
         .map(result => result.obj)
       : [...this.state.tabs];
 
