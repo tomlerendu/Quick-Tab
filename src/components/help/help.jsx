@@ -10,7 +10,7 @@ const Help = ({
     Welcome to Quick Tab!
   </h2>
   <ul className={ 'my-4 list-desc text-xs text-green-900 ' }>
-    { this.props.browserActionShortcut && <li className={ 'mb-1' }>
+    { browserActionShortcut && <li className={ 'mb-1' }>
       Use { browserActionShortcut } to open this window quickly
     </li> }
     { !browserActionShortcut && <li className={ 'mb-1' }>

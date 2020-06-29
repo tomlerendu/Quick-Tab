@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './tab.scss';
 import PropTypes from 'prop-types';
 import * as options from '../../providers/options';
@@ -8,6 +8,8 @@ const Tab = ({
   tab,
   displayDensity,
 }) => {
+  const [canLoadFavicon, setCanLoadFavicon] = useState(true);
+
   const yPadding = {
     default: 'py-3',
     comfortable: 'py-2',
@@ -37,8 +39,9 @@ const Tab = ({
 
     return <img
       className={ 'tab-icon mr-4' }
-      src={ url }
+      src={ canLoadFavicon ? url : 'images/blank.png' }
       alt={ `${ tab.title } Icon` }
+      onError={ () => setCanLoadFavicon(false) }
     />;
   };
 
